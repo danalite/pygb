@@ -4,7 +4,7 @@
 Testing
 =======
 
-The unit tests for PyAutoGUI are currently not comprehensive. The tests (in basicTests.py) cover the following:
+The unit tests for PyGB are currently not comprehensive. The tests (in basicTests.py) cover the following:
 
 - onScreen()
 - size()
@@ -24,6 +24,6 @@ Platforms Tested
 
 (If you have run the unit tests successfully on other platforms, please tell al@inventwithpython.com.)
 
-PyAutoGUI is not compatible with Python 2.4 or before.
+PyGB is not compatible with Python 2.4 or before.
 
 The keyboard functions do not work on Ubuntu when run in VirtualBox on Windows.

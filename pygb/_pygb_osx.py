@@ -4,25 +4,25 @@ import sys
 try:
     import Quartz
 except:
-    assert False, "You must first install pyobjc-core and pyobjc: https://pyautogui.readthedocs.io/en/latest/install.html"
+    assert False, "You must first install pyobjc-core and pyobjc: https://pygb.readthedocs.io/en/latest/install.html"
 import AppKit
 
-import pyautogui
-from pyautogui import LEFT, MIDDLE, RIGHT
+import pygb
+from pygb import LEFT, MIDDLE, RIGHT
 
 if sys.platform !=  'darwin':
-    raise Exception('The pyautogui_osx module should only be loaded on an OS X system.')
+    raise Exception('The pygb_osx module should only be loaded on an OS X system.')
 
 
 
 """ Taken from events.h
 /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/Headers/Events.h
 
-The *KB dictionaries in pyautogui map a string that can be passed to keyDown(),
+The *KB dictionaries in pygb map a string that can be passed to keyDown(),
 keyUp(), or press() into the code used for the OS-specific keyboard function.
 
 They should always be lowercase, and the same keys should be used across all OSes."""
-keyboardMapping = dict([(key, None) for key in pyautogui.KEY_NAMES])
+keyboardMapping = dict([(key, None) for key in pygb.KEY_NAMES])
 keyboardMapping.update({
     'a': 0x00, # kVK_ANSI_A
     's': 0x01, # kVK_ANSI_S
@@ -216,44 +216,53 @@ special_key_translate_table = {
     'KEYTYPE_ILLUMINATION_TOGGLE': 23
 }
 
-def _keyDown(key):
+def _keyDown(key, window=None):
     if key not in keyboardMapping or keyboardMapping[key] is None:
         return
 
     if key in special_key_translate_table:
-        _specialKeyEvent(key, 'down')
+        
+        _specialKeyEvent(key, 'down', window)
     else:
-        _normalKeyEvent(key, 'down')
+        _normalKeyEvent(key, 'down', window)
 
-def _keyUp(key):
+def _keyUp(key, window=None):
     if key not in keyboardMapping or keyboardMapping[key] is None:
         return
 
     if key in special_key_translate_table:
-        _specialKeyEvent(key, 'up')
+        _specialKeyEvent(key, 'up', window)
     else:
-        _normalKeyEvent(key, 'up')
+        _normalKeyEvent(key, 'up', window)
 
 
-def _normalKeyEvent(key, upDown):
+def _normalKeyEvent(key, upDown, window=None):
     assert upDown in ('up', 'down'), "upDown argument must be 'up' or 'down'"
 
     try:
-        if pyautogui.isShiftCharacter(key):
+        if pygb.isShiftCharacter(key):
             key_code = keyboardMapping[key.lower()]
 
             event = Quartz.CGEventCreateKeyboardEvent(None,
                         keyboardMapping['shift'], upDown == 'down')
-            Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
+            if window:
+                Quartz.CGEventPostToPid(window, event)
+            else:
+                Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
+
             # Tiny sleep to let OS X catch up on us pressing shift
-            time.sleep(pyautogui.DARWIN_CATCH_UP_TIME)
+            time.sleep(pygb.DARWIN_CATCH_UP_TIME)
 
         else:
             key_code = keyboardMapping[key]
 
         event = Quartz.CGEventCreateKeyboardEvent(None, key_code, upDown == 'down')
-        Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
-        time.sleep(pyautogui.DARWIN_CATCH_UP_TIME)
+        if window:
+            Quartz.CGEventPostToPid(window, event)
+        else:
+            Quartz.CGEventPost(Quartz.kCGHIDEventTap, event)
+
+        time.sleep(pygb.DARWIN_CATCH_UP_TIME)
 
     # TODO - wait, is the shift key's keyup not done?
     # TODO - get rid of this try-except.
@@ -427,8 +436,8 @@ def _dragTo(x, y, button):
         _sendMouseEvent(Quartz.kCGEventRightMouseDragged , x, y, Quartz.kCGMouseButtonRight)
     else:
         assert False, "button argument not in ('left', 'middle', 'right')"
-    time.sleep(pyautogui.DARWIN_CATCH_UP_TIME) # needed to allow OS time to catch up.
+    time.sleep(pygb.DARWIN_CATCH_UP_TIME) # needed to allow OS time to catch up.
 
 def _moveTo(x, y):
     _sendMouseEvent(Quartz.kCGEventMouseMoved, x, y, 0)
-    time.sleep(pyautogui.DARWIN_CATCH_UP_TIME) # needed to allow OS time to catch up.
+    time.sleep(pygb.DARWIN_CATCH_UP_TIME) # needed to allow OS time to catch up.

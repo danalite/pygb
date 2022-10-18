@@ -1,13 +1,13 @@
-pyautogui package
+pygb package
 =================
 
 Submodules
 ----------
 
-pyautogui.keynames module
+pygb.keynames module
 -------------------------
 
-.. automodule:: pyautogui.keynames
+.. automodule:: pygb.keynames
    :members:
    :undoc-members:
    :show-inheritance:
@@ -16,7 +16,7 @@ pyautogui.keynames module
 Module contents
 ---------------
 
-.. automodule:: pyautogui
+.. automodule:: pygb
    :members:
    :undoc-members:
    :show-inheritance:

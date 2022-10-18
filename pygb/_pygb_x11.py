@@ -1,9 +1,9 @@
 # NOTE - It is a known issue that the keyboard-related functions don't work on Ubuntu VMs in Virtualbox.
 
-import pyautogui
+import pygb
 import sys
 import os
-from pyautogui import LEFT, MIDDLE, RIGHT
+from pygb import LEFT, MIDDLE, RIGHT
 
 from Xlib.display import Display
 from Xlib import X
@@ -14,9 +14,9 @@ BUTTON_NAME_MAPPING = {LEFT: 1, MIDDLE: 2, RIGHT: 3, 1: 1, 2: 2, 3: 3, 4: 4, 5: 
 
 
 if sys.platform in ('java', 'darwin', 'win32'):
-    raise Exception('The pyautogui_x11 module should only be loaded on a Unix system that supports X11.')
+    raise Exception('The pygb_x11 module should only be loaded on a Unix system that supports X11.')
 
-#from pyautogui import *
+#from pygb import *
 
 """
 Much of this code is based on information gleaned from Paul Barton's PyKeyboard in PyUserInput from 2013, itself derived from Akkana Peck's pykey in 2008 ( http://www.shallowsky.com/software/crikey/pykey-0.1 ), itself derived from her "Crikey" lib.
@@ -106,7 +106,7 @@ def _keyDown(key):
 
     Args:
       key (str): The key to be pressed down. The valid names are listed in
-      pyautogui.KEY_NAMES.
+      pygb.KEY_NAMES.
 
     Returns:
       None
@@ -119,7 +119,7 @@ def _keyDown(key):
         _display.sync()
         return
 
-    needsShift = pyautogui.isShiftCharacter(key)
+    needsShift = pygb.isShiftCharacter(key)
     if needsShift:
         fake_input(_display, X.KeyPress, keyboardMapping['shift'])
 
@@ -135,7 +135,7 @@ def _keyUp(key):
 
     Args:
       key (str): The key to be released up. The valid names are listed in
-      pyautogui.KEY_NAMES.
+      pygb.KEY_NAMES.
 
     Returns:
       None
@@ -163,11 +163,11 @@ _display = Display(os.environ['DISPLAY'])
 
 """ Information for keyboardMapping derived from PyKeyboard's special_key_assignment() function.
 
-The *KB dictionaries in pyautogui map a string that can be passed to keyDown(),
+The *KB dictionaries in pygb map a string that can be passed to keyDown(),
 keyUp(), or press() into the code used for the OS-specific keyboard function.
 
 They should always be lowercase, and the same keys should be used across all OSes."""
-keyboardMapping = dict([(key, None) for key in pyautogui.KEY_NAMES])
+keyboardMapping = dict([(key, None) for key in pygb.KEY_NAMES])
 keyboardMapping.update({
     'backspace':         _display.keysym_to_keycode(Xlib.XK.string_to_keysym('BackSpace')),
     '\b':                _display.keysym_to_keycode(Xlib.XK.string_to_keysym('BackSpace')),

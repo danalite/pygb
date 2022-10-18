@@ -1,6 +1,6 @@
-# PyAutoGUI lets Python control the mouse and keyboard, and other GUI automation tasks. For Windows, macOS, and Linux,
+# PyGB lets Python control the mouse and keyboard, and other GUI automation tasks. For Windows, macOS, and Linux,
 # on Python 3 and 2.
-# https://github.com/asweigart/pyautogui
+# https://github.com/asweigart/pygb
 # Al Sweigart al@inventwithpython.com (Send me feedback & suggestions!)
 
 
@@ -25,19 +25,19 @@ import functools
 from contextlib import contextmanager
 
 
-class PyAutoGUIException(Exception):
+class PyGBException(Exception):
     """
-    PyAutoGUI code will raise this exception class for any invalid actions. If PyAutoGUI raises some other exception,
-    you should assume that this is caused by a bug in PyAutoGUI itself. (Including a failure to catch potential
-    exceptions raised by PyAutoGUI.)
+    PyGB code will raise this exception class for any invalid actions. If PyGB raises some other exception,
+    you should assume that this is caused by a bug in PyGB itself. (Including a failure to catch potential
+    exceptions raised by PyGB.)
     """
 
     pass
 
 
-class FailSafeException(PyAutoGUIException):
+class FailSafeException(PyGBException):
     """
-    This exception is raised by PyAutoGUI functions when the user puts the mouse cursor into one of the "failsafe
+    This exception is raised by PyGB functions when the user puts the mouse cursor into one of the "failsafe
     points" (by default, one of the four corners of the primary monitor). This exception shouldn't be caught; it's
     meant to provide a way to terminate a misbehaving script.
     """
@@ -45,12 +45,12 @@ class FailSafeException(PyAutoGUIException):
     pass
 
 
-class ImageNotFoundException(PyAutoGUIException):
+class ImageNotFoundException(PyGBException):
     """
-    This exception is the PyAutoGUI version of PyScreeze's `ImageNotFoundException`, which is raised when a locate*()
+    This exception is the PyGB version of PyScreeze's `ImageNotFoundException`, which is raised when a locate*()
     function call is unable to find an image.
 
-    Ideally, `pyscreeze.ImageNotFoundException` should never be raised by PyAutoGUI.
+    Ideally, `pyscreeze.ImageNotFoundException` should never be raised by PyGB.
     """
 
 
@@ -107,11 +107,11 @@ except ImportError:
 
     def _couldNotImportPyTweening(*unused_args, **unused_kwargs):
         """
-        This function raises ``PyAutoGUIException``. It's used for the PyTweening function names if the PyTweening
+        This function raises ``PyGBException``. It's used for the PyTweening function names if the PyTweening
         module failed to be imported.
         """
-        raise PyAutoGUIException(
-            "PyAutoGUI was unable to import pytweening. Please install this module to enable the function you tried to call."
+        raise PyGBException(
+            "PyGB was unable to import pytweening. Please install this module to enable the function you tried to call."
         )
 
     easeInQuad = _couldNotImportPyTweening
@@ -146,27 +146,11 @@ except ImportError:
     easeInOutBounce = _couldNotImportPyTweening
 
 
-try:
-    from pymsgbox import alert, confirm, prompt, password
-except ImportError:
-    # If pymsgbox module is not found, those methods will not be available.
-    def _couldNotImportPyMsgBox(*unused_args, **unused_kwargs):
-        """
-        This function raises ``PyAutoGUIException``. It's used for the PyMsgBox function names if the PyMsgbox module
-        failed to be imported.
-        """
-        raise PyAutoGUIException(
-            "PyAutoGUI was unable to import pymsgbox. Please install this module to enable the function you tried to call."
-        )
-
-    alert = confirm = prompt = password = _couldNotImportPyMsgBox
-
-
-def raisePyAutoGUIImageNotFoundException(wrappedFunction):
+def raisePyGBImageNotFoundException(wrappedFunction):
     """
-    A decorator that wraps PyScreeze locate*() functions so that the PyAutoGUI user sees them raise PyAutoGUI's
+    A decorator that wraps PyScreeze locate*() functions so that the PyGB user sees them raise PyGB's
     ImageNotFoundException rather than PyScreeze's ImageNotFoundException. This is because PyScreeze should be
-    invisible to PyAutoGUI users.
+    invisible to PyGB users.
     """
 
     @functools.wraps(wrappedFunction)
@@ -174,7 +158,7 @@ def raisePyAutoGUIImageNotFoundException(wrappedFunction):
         try:
             return wrappedFunction(*args, **kwargs)
         except pyscreeze.ImageNotFoundException:
-            raise ImageNotFoundException  # Raise PyAutoGUI's ImageNotFoundException.
+            raise ImageNotFoundException  # Raise PyGB's ImageNotFoundException.
 
     return wrapper
 
@@ -183,38 +167,38 @@ try:
     import pyscreeze
     from pyscreeze import center, grab, pixel, pixelMatchesColor, screenshot
 
-    # Change the locate*() functions so that they raise PyAutoGUI's ImageNotFoundException instead.
-    @raisePyAutoGUIImageNotFoundException
+    # Change the locate*() functions so that they raise PyGB's ImageNotFoundException instead.
+    @raisePyGBImageNotFoundException
     def locate(*args, **kwargs):
         return pyscreeze.locate(*args, **kwargs)
 
     locate.__doc__ = pyscreeze.locate.__doc__
 
-    @raisePyAutoGUIImageNotFoundException
+    @raisePyGBImageNotFoundException
     def locateAll(*args, **kwargs):
         return pyscreeze.locateAll(*args, **kwargs)
 
     locateAll.__doc__ = pyscreeze.locateAll.__doc__
 
-    @raisePyAutoGUIImageNotFoundException
+    @raisePyGBImageNotFoundException
     def locateAllOnScreen(*args, **kwargs):
         return pyscreeze.locateAllOnScreen(*args, **kwargs)
 
     locateAllOnScreen.__doc__ = pyscreeze.locateAllOnScreen.__doc__
 
-    @raisePyAutoGUIImageNotFoundException
+    @raisePyGBImageNotFoundException
     def locateCenterOnScreen(*args, **kwargs):
         return pyscreeze.locateCenterOnScreen(*args, **kwargs)
 
     locateCenterOnScreen.__doc__ = pyscreeze.locateCenterOnScreen.__doc__
 
-    @raisePyAutoGUIImageNotFoundException
+    @raisePyGBImageNotFoundException
     def locateOnScreen(*args, **kwargs):
         return pyscreeze.locateOnScreen(*args, **kwargs)
 
     locateOnScreen.__doc__ = pyscreeze.locateOnScreen.__doc__
 
-    @raisePyAutoGUIImageNotFoundException
+    @raisePyGBImageNotFoundException
     def locateOnWindow(*args, **kwargs):
         return pyscreeze.locateOnWindow(*args, **kwargs)
 
@@ -225,11 +209,11 @@ except ImportError:
     # If pyscreeze module is not found, screenshot-related features will simply not work.
     def _couldNotImportPyScreeze(*unused_args, **unsed_kwargs):
         """
-        This function raises ``PyAutoGUIException``. It's used for the PyScreeze function names if the PyScreeze module
+        This function raises ``PyGBException``. It's used for the PyScreeze function names if the PyScreeze module
         failed to be imported.
         """
-        raise PyAutoGUIException(
-            "PyAutoGUI was unable to import pyscreeze. (This is likely because you're running a version of Python that Pillow (which pyscreeze depends on) doesn't support currently.) Please install this module to enable the function you tried to call."
+        raise PyGBException(
+            "PyGB was unable to import pyscreeze. (This is likely because you're running a version of Python that Pillow (which pyscreeze depends on) doesn't support currently.) Please install this module to enable the function you tried to call."
         )
 
     center = _couldNotImportPyScreeze
@@ -260,17 +244,17 @@ except ImportError:
 
     def mouseInfo():
         """
-        This function raises PyAutoGUIException. It's used for the MouseInfo function names if the MouseInfo module
+        This function raises PyGBException. It's used for the MouseInfo function names if the MouseInfo module
         failed to be imported.
         """
-        raise PyAutoGUIException(
-            "PyAutoGUI was unable to import mouseinfo. Please install this module to enable the function you tried to call."
+        raise PyGBException(
+            "PyGB was unable to import mouseinfo. Please install this module to enable the function you tried to call."
         )
 
 
 def useImageNotFoundException(value=None):
     """
-    When called with no arguments, PyAutoGUI will raise ImageNotFoundException when the PyScreeze locate*() functions
+    When called with no arguments, PyGB will raise ImageNotFoundException when the PyScreeze locate*() functions
     can't find the image it was told to locate. The default behavior is to return None. Call this function with no
     arguments (or with True as the argument) to have exceptions raised, which is a better practice.
 
@@ -282,38 +266,8 @@ def useImageNotFoundException(value=None):
     try:
         pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = value
     except NameError:
-        raise PyAutoGUIException("useImageNotFoundException() ws called but pyscreeze isn't installed.")
+        raise PyGBException("useImageNotFoundException() ws called but pyscreeze isn't installed.")
 
-
-if sys.platform == "win32":  # PyGetWindow currently only supports Windows.
-    try:
-        from pygetwindow import (
-            Window,
-            getActiveWindow,
-            getActiveWindowTitle,
-            getWindowsAt,
-            getWindowsWithTitle,
-            getAllWindows,
-            getAllTitles,
-        )
-    except ImportError:
-        # If pygetwindow module is not found, those methods will not be available.
-        def _couldNotImportPyGetWindow(*unused_args, **unused_kwargs):
-            """
-            This function raises PyAutoGUIException. It's used for the PyGetWindow function names if the PyGetWindow
-            module failed to be imported.
-            """
-            raise PyAutoGUIException(
-                "PyAutoGUI was unable to import pygetwindow. Please install this module to enable the function you tried to call."
-            )
-
-        Window = _couldNotImportPyGetWindow
-        getActiveWindow = _couldNotImportPyGetWindow
-        getActiveWindowTitle = _couldNotImportPyGetWindow
-        getWindowsAt = _couldNotImportPyGetWindow
-        getWindowsWithTitle = _couldNotImportPyGetWindow
-        getAllWindows = _couldNotImportPyGetWindow
-        getAllTitles = _couldNotImportPyGetWindow
 
 KEY_NAMES = [
     "\t",
@@ -538,16 +492,16 @@ def isShiftCharacter(character):
 
 # The platformModule is where we reference the platform-specific functions.
 if sys.platform.startswith("java"):
-    # from . import _pyautogui_java as platformModule
-    raise NotImplementedError("Jython is not yet supported by PyAutoGUI.")
+    # from . import _pygb_java as platformModule
+    raise NotImplementedError("Jython is not yet supported by PyGB.")
 elif sys.platform == "darwin":
-    from . import _pyautogui_osx as platformModule
+    from . import _pygb_osx as platformModule
 elif sys.platform == "win32":
-    from . import _pyautogui_win as platformModule
+    from . import _pygb_win as platformModule
 elif platform.system() == "Linux":
-    from . import _pyautogui_x11 as platformModule
+    from . import _pygb_x11 as platformModule
 else:
-    raise NotImplementedError("Your platform (%s) is not supported by PyAutoGUI." % (platform.system()))
+    raise NotImplementedError("Your platform (%s) is not supported by PyGB." % (platform.system()))
 
 # TODO: Having module-wide user-writable global variables is bad. It makes
 # restructuring the code very difficult. For instance, what if we decide to
@@ -578,7 +532,7 @@ FAILSAFE_POINTS = [(0, 0)]
 
 LOG_SCREENSHOTS = False  # If True, save screenshots for clicks and key presses.
 
-# If not None, PyAutoGUI deletes old screenshots when this limit has been reached:
+# If not None, PyGB deletes old screenshots when this limit has been reached:
 LOG_SCREENSHOTS_LIMIT = 10
 G_LOG_SCREENSHOTS_FILENAMES = []  # TODO - make this a deque
 
@@ -586,7 +540,7 @@ Point = collections.namedtuple("Point", "x y")
 Size = collections.namedtuple("Size", "width height")
 
 
-def _genericPyAutoGUIChecks(wrappedFunction):
+def _genericPyGBChecks(wrappedFunction):
     """
     A decorator that calls failSafeCheck() before the decorated function and
     _handlePause() after it.
@@ -628,13 +582,13 @@ def linear(n):
 
     # We use this function instead of pytweening.linear for the default tween function just in case pytweening couldn't be imported.
     if not 0.0 <= n <= 1.0:
-        raise PyAutoGUIException("Argument must be between 0.0 and 1.0.")
+        raise PyGBException("Argument must be between 0.0 and 1.0.")
     return n
 
 
 def _handlePause(_pause):
     """
-    A helper function for performing a pause at the end of a PyAutoGUI function based on some settings.
+    A helper function for performing a pause at the end of a PyGB function based on some settings.
 
     If ``_pause`` is ``True``, then sleep for ``PAUSE`` seconds (the global pause setting).
     """
@@ -646,7 +600,7 @@ def _handlePause(_pause):
 def _normalizeXYArgs(firstArg, secondArg):
     """
     Returns a ``Point`` object based on ``firstArg`` and ``secondArg``, which are the first two arguments passed to
-    several PyAutoGUI functions. If ``firstArg`` and ``secondArg`` are both ``None``, returns the current mouse cursor
+    several PyGB functions. If ``firstArg`` and ``secondArg`` are both ``None``, returns the current mouse cursor
     position.
 
     ``firstArg`` and ``secondArg`` can be integers, a sequence of integers, or a string representing an image filename
@@ -682,7 +636,7 @@ def _normalizeXYArgs(firstArg, secondArg):
             if secondArg is None:
                 return Point(int(firstArg[0]), int(firstArg[1]))
             else:
-                raise PyAutoGUIException(
+                raise PyGBException(
                     "When passing a sequence for firstArg, secondArg must not be passed (received {0}).".format(
                         repr(secondArg)
                     )
@@ -692,13 +646,13 @@ def _normalizeXYArgs(firstArg, secondArg):
             if secondArg is None:
                 return center(firstArg)
             else:
-                raise PyAutoGUIException(
+                raise PyGBException(
                     "When passing a sequence for firstArg, secondArg must not be passed and default to None (received {0}).".format(
                         repr(secondArg)
                     )
                 )
         else:
-            raise PyAutoGUIException(
+            raise PyGBException(
                 "The supplied sequence must have exactly 2 or exactly 4 elements ({0} were received).".format(
                     len(firstArg)
                 )
@@ -709,7 +663,7 @@ def _normalizeXYArgs(firstArg, secondArg):
 
 def _logScreenshot(logScreenshot, funcName, funcArgs, folder="."):
     """
-    A helper function that creates a screenshot to act as a logging mechanism. When a PyAutoGUI function is called,
+    A helper function that creates a screenshot to act as a logging mechanism. When a PyGB function is called,
     this function is also called to capture the state of the screen when that function was called.
 
     If ``logScreenshot`` is ``False`` (or None and the ``LOG_SCREENSHOTS`` constant is ``False``), no screenshot is taken.
@@ -815,7 +769,7 @@ def onScreen(x, y=None):
 
 """
 NOTE: Although "mouse1" and "mouse2" buttons usually refer to the left and
-right mouse buttons respectively, in PyAutoGUI 1, 2, and 3 refer to the left,
+right mouse buttons respectively, in PyGB 1, 2, and 3 refer to the left,
 middle, and right buttons, respectively. This is because Xlib interprets
 button 2 as the middle button and button 3 as the right button, so we hold
 that for Windows and macOS as well (since those operating systems don't use
@@ -852,13 +806,13 @@ def _normalizeButton(button):
     if platform.system() == "Linux":
         # Check for valid button arg on Linux:
         if button not in (LEFT, MIDDLE, RIGHT, PRIMARY, SECONDARY, 1, 2, 3, 4, 5, 6, 7):
-            raise PyAutoGUIException(
+            raise PyGBException(
                 "button argument must be one of ('left', 'middle', 'right', 'primary', 'secondary', 1, 2, 3, 4, 5, 6, 7)"
             )
     else:
         # Check for valid button arg on Windows and macOS:
         if button not in (LEFT, MIDDLE, RIGHT, PRIMARY, SECONDARY, 1, 2, 3):
-            raise PyAutoGUIException(
+            raise PyGBException(
                 "button argument must be one of ('left', 'middle', 'right', 'primary', 'secondary', 1, 2, 3)"
             )
 
@@ -880,7 +834,7 @@ def _normalizeButton(button):
     return {LEFT: LEFT, MIDDLE: MIDDLE, RIGHT: RIGHT, 1: LEFT, 2: MIDDLE, 3: RIGHT, 4: 4, 5: 5, 6: 6, 7: 7}[button]
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def mouseDown(x=None, y=None, button=PRIMARY, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
     """Performs pressing a mouse button down (but not up).
 
@@ -902,7 +856,7 @@ def mouseDown(x=None, y=None, button=PRIMARY, duration=0.0, tween=linear, logScr
       None
 
     Raises:
-      PyAutoGUIException: If button is not one of 'left', 'middle', 'right', 1, 2, or 3
+      PyGBException: If button is not one of 'left', 'middle', 'right', 1, 2, or 3
     """
     button = _normalizeButton(button)
     x, y = _normalizeXYArgs(x, y)
@@ -913,7 +867,7 @@ def mouseDown(x=None, y=None, button=PRIMARY, duration=0.0, tween=linear, logScr
     platformModule._mouseDown(x, y, button)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def mouseUp(x=None, y=None, button=PRIMARY, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
     """Performs releasing a mouse button up (but not down beforehand).
 
@@ -935,7 +889,7 @@ def mouseUp(x=None, y=None, button=PRIMARY, duration=0.0, tween=linear, logScree
       None
 
     Raises:
-      PyAutoGUIException: If button is not one of 'left', 'middle', 'right', 1, 2, or 3
+      PyGBException: If button is not one of 'left', 'middle', 'right', 1, 2, or 3
     """
     button = _normalizeButton(button)
     x, y = _normalizeXYArgs(x, y)
@@ -946,7 +900,7 @@ def mouseUp(x=None, y=None, button=PRIMARY, duration=0.0, tween=linear, logScree
     platformModule._mouseUp(x, y, button)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def click(
     x=None, y=None, clicks=1, interval=0.0, button=PRIMARY, duration=0.0, tween=linear, logScreenshot=None, _pause=True
 ):
@@ -956,7 +910,7 @@ def click(
     When no arguments are passed, the primary mouse button is clicked at the mouse cursor's current location.
 
     If integers for ``x`` and ``y`` are passed, the click will happen at that XY coordinate. If ``x`` is a string, the
-    string is an image filename that PyAutoGUI will attempt to locate on the screen and click the center of. If ``x``
+    string is an image filename that PyGB will attempt to locate on the screen and click the center of. If ``x``
     is a sequence of two coordinates, those coordinates will be used for the XY coordinate to click on.
 
     The ``clicks`` argument is an int of how many clicks to make, and defaults to ``1``.
@@ -976,10 +930,10 @@ def click(
     that specifies the movement pattern of the mouse cursor as it moves to the XY coordinates. The default is a
     simple linear tween. See the PyTweening module documentation for more details.
 
-    The ``pause`` parameter is deprecated. Call the ``pyautogui.sleep()`` function to implement a pause.
+    The ``pause`` parameter is deprecated. Call the ``pygb.sleep()`` function to implement a pause.
 
     Raises:
-      PyAutoGUIException: If button is not one of 'left', 'middle', 'right', 1, 2, 3
+      PyGBException: If button is not one of 'left', 'middle', 'right', 1, 2, 3
     """
     # TODO: I'm leaving buttons 4, 5, 6, and 7 undocumented for now. I need to understand how they work.
     button = _normalizeButton(button)
@@ -1004,7 +958,7 @@ def click(
             time.sleep(interval)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def leftClick(x=None, y=None, interval=0.0, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
     """Performs a left mouse button click.
 
@@ -1034,7 +988,7 @@ def leftClick(x=None, y=None, interval=0.0, duration=0.0, tween=linear, logScree
     click(x, y, 1, interval, LEFT, duration, tween, logScreenshot, _pause=_pause)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def rightClick(x=None, y=None, interval=0.0, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
     """Performs a right mouse button click.
 
@@ -1062,7 +1016,7 @@ def rightClick(x=None, y=None, interval=0.0, duration=0.0, tween=linear, logScre
     click(x, y, 1, interval, RIGHT, duration, tween, logScreenshot, _pause=_pause)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def middleClick(x=None, y=None, interval=0.0, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
     """Performs a middle mouse button click.
 
@@ -1087,7 +1041,7 @@ def middleClick(x=None, y=None, interval=0.0, duration=0.0, tween=linear, logScr
     click(x, y, 1, interval, MIDDLE, duration, tween, logScreenshot, _pause=_pause)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def doubleClick(x=None, y=None, interval=0.0, button=LEFT, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
     """Performs a double click.
 
@@ -1114,7 +1068,7 @@ def doubleClick(x=None, y=None, interval=0.0, button=LEFT, duration=0.0, tween=l
       None
 
     Raises:
-      PyAutoGUIException: If button is not one of 'left', 'middle', 'right', 1, 2, 3, 4,
+      PyGBException: If button is not one of 'left', 'middle', 'right', 1, 2, 3, 4,
         5, 6, or 7
     """
 
@@ -1130,7 +1084,7 @@ def doubleClick(x=None, y=None, interval=0.0, button=LEFT, duration=0.0, tween=l
         click(x, y, 2, interval, button, duration, tween, logScreenshot, _pause=False)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def tripleClick(x=None, y=None, interval=0.0, button=LEFT, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
     """Performs a triple click.
 
@@ -1157,7 +1111,7 @@ def tripleClick(x=None, y=None, interval=0.0, button=LEFT, duration=0.0, tween=l
       None
 
     Raises:
-      PyAutoGUIException: If button is not one of 'left', 'middle', 'right', 1, 2, 3, 4,
+      PyGBException: If button is not one of 'left', 'middle', 'right', 1, 2, 3, 4,
         5, 6, or 7
     """
     # Multiple clicks work different in OSX
@@ -1172,7 +1126,7 @@ def tripleClick(x=None, y=None, interval=0.0, button=LEFT, duration=0.0, tween=l
         click(x, y, 3, interval, button, duration, tween, logScreenshot, _pause=False)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def scroll(clicks, x=None, y=None, logScreenshot=None, _pause=True):
     """Performs a scroll of the mouse scroll wheel.
 
@@ -1202,7 +1156,7 @@ def scroll(clicks, x=None, y=None, logScreenshot=None, _pause=True):
     platformModule._scroll(clicks, x, y)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def hscroll(clicks, x=None, y=None, logScreenshot=None, _pause=True):
     """Performs an explicitly horizontal scroll of the mouse scroll wheel,
     if this is supported by the operating system. (Currently just Linux.)
@@ -1230,7 +1184,7 @@ def hscroll(clicks, x=None, y=None, logScreenshot=None, _pause=True):
     platformModule._hscroll(clicks, x, y)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def vscroll(clicks, x=None, y=None, logScreenshot=None, _pause=True):
     """Performs an explicitly vertical scroll of the mouse scroll wheel,
     if this is supported by the operating system. (Currently just Linux.)
@@ -1258,7 +1212,7 @@ def vscroll(clicks, x=None, y=None, logScreenshot=None, _pause=True):
     platformModule._vscroll(clicks, x, y)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def moveTo(x=None, y=None, duration=0.0, tween=linear, logScreenshot=False, _pause=True):
     """Moves the mouse cursor to a point on the screen.
 
@@ -1289,7 +1243,7 @@ def moveTo(x=None, y=None, duration=0.0, tween=linear, logScreenshot=False, _pau
     _mouseMoveDrag("move", x, y, 0, 0, duration, tween)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def moveRel(xOffset=None, yOffset=None, duration=0.0, tween=linear, logScreenshot=False, _pause=True):
     """Moves the mouse cursor to a point on the screen, relative to its current
     position.
@@ -1319,10 +1273,10 @@ def moveRel(xOffset=None, yOffset=None, duration=0.0, tween=linear, logScreensho
     _mouseMoveDrag("move", None, None, xOffset, yOffset, duration, tween)
 
 
-move = moveRel  # For PyAutoGUI 1.0, move() replaces moveRel().
+move = moveRel  # For PyGB 1.0, move() replaces moveRel().
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def dragTo(
     x=None, y=None, duration=0.0, tween=linear, button=PRIMARY, logScreenshot=None, _pause=True, mouseDownUp=True
 ):
@@ -1363,7 +1317,7 @@ def dragTo(
         mouseUp(button=button, logScreenshot=False, _pause=False)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def dragRel(
     xOffset=0, yOffset=0, duration=0.0, tween=linear, button=PRIMARY, logScreenshot=None, _pause=True, mouseDownUp=True
 ):
@@ -1412,7 +1366,7 @@ def dragRel(
         mouseUp(button=button, logScreenshot=False, _pause=False)
 
 
-drag = dragRel  # For PyAutoGUI 1.0, we want drag() to replace dragRel().
+drag = dragRel  # For PyGB 1.0, we want drag() to replace dragRel().
 
 
 def _mouseMoveDrag(moveOrDrag, x, y, xOffset, yOffset, duration, tween=linear, button=None):
@@ -1521,9 +1475,9 @@ def _mouseMoveDrag(moveOrDrag, x, y, xOffset, yOffset, duration, tween=linear, b
 
 def isValidKey(key):
     """Returns a Boolean value if the given key is a valid value to pass to
-    PyAutoGUI's keyboard-related functions for the current platform.
+    PyGB's keyboard-related functions for the current platform.
 
-    This function is here because passing an invalid value to the PyAutoGUI
+    This function is here because passing an invalid value to the PyGB
     keyboard functions currently is a no-op that does not raise an exception.
 
     Some keys are only valid on some platforms. For example, while 'esc' is
@@ -1539,8 +1493,8 @@ def isValidKey(key):
     return platformModule.keyboardMapping.get(key, None) != None
 
 
-@_genericPyAutoGUIChecks
-def keyDown(key, logScreenshot=None, _pause=True):
+@_genericPyGBChecks
+def keyDown(key, logScreenshot=None, _pause=True, window=None):
     """Performs a keyboard key press without the release. This will put that
     key in a held down state.
 
@@ -1558,11 +1512,11 @@ def keyDown(key, logScreenshot=None, _pause=True):
         key = key.lower()
 
     _logScreenshot(logScreenshot, "keyDown", key, folder=".")
-    platformModule._keyDown(key)
+    platformModule._keyDown(key, window)
 
 
-@_genericPyAutoGUIChecks
-def keyUp(key, logScreenshot=None, _pause=True):
+@_genericPyGBChecks
+def keyUp(key, logScreenshot=None, _pause=True, window=None):
     """Performs a keyboard key release (without the press down beforehand).
 
     Args:
@@ -1579,7 +1533,7 @@ def keyUp(key, logScreenshot=None, _pause=True):
     platformModule._keyUp(key)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def press(keys, presses=1, interval=0.0, logScreenshot=None, _pause=True):
     """Performs a keyboard key press down, followed by a release.
 
@@ -1618,7 +1572,7 @@ def press(keys, presses=1, interval=0.0, logScreenshot=None, _pause=True):
 
 
 @contextmanager
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def hold(keys, logScreenshot=None, _pause=True):
     """Context manager that performs a keyboard key press down upon entry,
     followed by a release upon exit.
@@ -1655,7 +1609,7 @@ def hold(keys, logScreenshot=None, _pause=True):
             platformModule._keyUp(k)
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def typewrite(message, interval=0.0, logScreenshot=None, _pause=True):
     """Performs a keyboard key press down, followed by a release, for each of
     the characters in message.
@@ -1688,10 +1642,10 @@ def typewrite(message, interval=0.0, logScreenshot=None, _pause=True):
         failSafeCheck()
 
 
-write = typewrite  # In PyAutoGUI 1.0, write() replaces typewrite().
+write = typewrite  # In PyGB 1.0, write() replaces typewrite().
 
 
-@_genericPyAutoGUIChecks
+@_genericPyGBChecks
 def hotkey(*args, **kwargs):
     """Performs key down presses on the arguments passed in order, then performs
     key releases in reverse order.
@@ -1711,22 +1665,23 @@ def hotkey(*args, **kwargs):
     interval = float(kwargs.get("interval", 0.0))  # TODO - this should be taken out.
 
     _logScreenshot(kwargs.get("logScreenshot"), "hotkey", ",".join(args), folder=".")
+    window = kwargs.get("window")
     for c in args:
         if len(c) > 1:
             c = c.lower()
-        platformModule._keyDown(c)
+        platformModule._keyDown(c, window)
         time.sleep(interval)
     for c in reversed(args):
         if len(c) > 1:
             c = c.lower()
-        platformModule._keyUp(c)
+        platformModule._keyUp(c, window)
         time.sleep(interval)
 
 
 def failSafeCheck():
     if FAILSAFE and tuple(position()) in FAILSAFE_POINTS:
         raise FailSafeException(
-            "PyAutoGUI fail-safe triggered from mouse moving to a corner of the screen. To disable this fail-safe, set pyautogui.FAILSAFE to False. DISABLING FAIL-SAFE IS NOT RECOMMENDED."
+            "PyGB fail-safe triggered from mouse moving to a corner of the screen. To disable this fail-safe, set pygb.FAILSAFE to False. DISABLING FAIL-SAFE IS NOT RECOMMENDED."
         )
 
 
@@ -1821,7 +1776,7 @@ def _getNumberToken(commandStr):
     pattern = re.compile(r"^(\s*(\+|\-)?\d+(\.\d+)?)")
     mo = pattern.search(commandStr)
     if mo is None:
-        raise PyAutoGUIException("Invalid command at index 0: a number was expected")
+        raise PyGBException("Invalid command at index 0: a number was expected")
 
     return mo.group(1)
 
@@ -1838,7 +1793,7 @@ def _getQuotedStringToken(commandStr):
     pattern = re.compile(r"^((\s*)('(.*?)'))")
     mo = pattern.search(commandStr)
     if mo is None:
-        raise PyAutoGUIException("Invalid command at index 0: a quoted string was expected")
+        raise PyGBException("Invalid command at index 0: a quoted string was expected")
 
     return mo.group(1)
 
@@ -1858,7 +1813,7 @@ def _getParensCommandStrToken(commandStr):
     pattern = re.compile(r"^\s*\(")
     mo = pattern.search(commandStr)
     if mo is None:
-        raise PyAutoGUIException("Invalid command at index 0: No open parenthesis found.")
+        raise PyGBException("Invalid command at index 0: No open parenthesis found.")
 
     # Check to make sure the parentheses are balanced:
     i = 0
@@ -1872,10 +1827,10 @@ def _getParensCommandStrToken(commandStr):
                 i += 1  # Remember to increment i past the ) before breaking.
                 break
             elif openParensCount == -1:
-                raise PyAutoGUIException("Invalid command at index 0: No open parenthesis for this close parenthesis.")
+                raise PyGBException("Invalid command at index 0: No open parenthesis for this close parenthesis.")
         i += 1
     if openParensCount > 0:
-        raise PyAutoGUIException("Invalid command at index 0: Not enough close parentheses.")
+        raise PyGBException("Invalid command at index 0: Not enough close parentheses.")
 
     return commandStr[0:i]
 
@@ -1891,7 +1846,7 @@ def _getCommaToken(commandStr):
     pattern = re.compile(r"^((\s*),)")
     mo = pattern.search(commandStr)
     if mo is None:
-        raise PyAutoGUIException("Invalid command at index 0: a comma was expected")
+        raise PyGBException("Invalid command at index 0: a comma was expected")
 
     return mo.group(1)
 
@@ -1913,7 +1868,7 @@ def _tokenizeCommandStr(commandStr):
 
         mo = commandPattern.match(commandStr[i:])
         if mo is None:
-            raise PyAutoGUIException("Invalid command at index %s: %s is not a valid command" % (i, commandStr[i]))
+            raise PyGBException("Invalid command at index %s: %s is not a valid command" % (i, commandStr[i]))
 
         individualCommand = mo.group(1)
         commandList.append(individualCommand)
@@ -1935,20 +1890,20 @@ def _tokenizeCommandStr(commandStr):
                 y = _getNumberToken(commandStr[i:])
                 i += len(y)  # Increment past the y number.
 
-            except PyAutoGUIException as excObj:
+            except PyGBException as excObj:
                 # Exception message starts with something like "Invalid command at index 0:"
                 # Change the index number and reraise it.
                 indexPart, colon, message = str(excObj).partition(":")
 
                 indexNum = indexPart[len("Invalid command at index ") :]
                 newIndexNum = int(indexNum) + i
-                raise PyAutoGUIException("Invalid command at index %s:%s" % (newIndexNum, message))
+                raise PyGBException("Invalid command at index %s:%s" % (newIndexNum, message))
 
             # Make sure either both x and y have +/- or neither of them do:
             if x.lstrip()[0].isdecimal() and not y.lstrip()[0].isdecimal():
-                raise PyAutoGUIException("Invalid command at index %s: Y has a +/- but X does not." % (i - len(y)))
+                raise PyGBException("Invalid command at index %s: Y has a +/- but X does not." % (i - len(y)))
             if not x.lstrip()[0].isdecimal() and y.lstrip()[0].isdecimal():
-                raise PyAutoGUIException(
+                raise PyGBException(
                     "Invalid command at index %s: Y does not have a +/- but X does." % (i - len(y))
                 )
 
@@ -1964,14 +1919,14 @@ def _tokenizeCommandStr(commandStr):
 
                 # TODO - raise an exception if a + or - is in the number.
 
-            except PyAutoGUIException as excObj:
+            except PyGBException as excObj:
                 # Exception message starts with something like "Invalid command at index 0:"
                 # Change the index number and reraise it.
                 indexPart, colon, message = str(excObj).partition(":")
 
                 indexNum = indexPart[len("Invalid command at index ") :]
                 newIndexNum = int(indexNum) + i
-                raise PyAutoGUIException("Invalid command at index %s:%s" % (newIndexNum, message))
+                raise PyGBException("Invalid command at index %s:%s" % (newIndexNum, message))
 
             # Get rid of any whitespace at the front:
             commandList.append(num.lstrip())
@@ -1981,14 +1936,14 @@ def _tokenizeCommandStr(commandStr):
             try:
                 quotedString = _getQuotedStringToken(commandStr[i:])
                 i += len(quotedString)  # Increment past the quoted string.
-            except PyAutoGUIException as excObj:
+            except PyGBException as excObj:
                 # Exception message starts with something like "Invalid command at index 0:"
                 # Change the index number and reraise it.
                 indexPart, colon, message = str(excObj).partition(":")
 
                 indexNum = indexPart[len("Invalid command at index ") :]
                 newIndexNum = int(indexNum) + i
-                raise PyAutoGUIException("Invalid command at index %s:%s" % (newIndexNum, message))
+                raise PyGBException("Invalid command at index %s:%s" % (newIndexNum, message))
 
             # Get rid of any whitespace at the front and the quotes:
             commandList.append(quotedString[1:-1].lstrip())
@@ -2002,14 +1957,14 @@ def _tokenizeCommandStr(commandStr):
                 subCommandStr = _getParensCommandStrToken(commandStr[i:])
                 i += len(subCommandStr)  # Increment past the sub-command string.
 
-            except PyAutoGUIException as excObj:
+            except PyGBException as excObj:
                 # Exception message starts with something like "Invalid command at index 0:"
                 # Change the index number and reraise it.
                 indexPart, colon, message = str(excObj).partition(":")
 
                 indexNum = indexPart[len("Invalid command at index ") :]
                 newIndexNum = int(indexNum) + i
-                raise PyAutoGUIException("Invalid command at index %s:%s" % (newIndexNum, message))
+                raise PyGBException("Invalid command at index %s:%s" % (newIndexNum, message))
 
             # Get rid of any whitespace at the front:
             commandList.append(numberOfLoops.lstrip())
@@ -2081,9 +2036,9 @@ def _runCommandList(commandList, _ssCount):
 
 
 def run(commandStr, _ssCount=None):
-    """Run a series of PyAutoGUI function calls according to a mini-language
+    """Run a series of PyGB function calls according to a mini-language
     made for this function. The `commandStr` is composed of character
-    commands that represent PyAutoGUI function calls.
+    commands that represent PyGB function calls.
 
     For example, `run('ccg-20,+0c')` clicks the mouse twice, then makes
     the mouse cursor go 20 pixels to the left, then click again.
@@ -2145,7 +2100,7 @@ def printInfo(dontPrint=False):
     msg = '''
          Platform: {}
    Python Version: {}
-PyAutoGUI Version: {}
+PyGB Version: {}
        Executable: {}
        Resolution: {}
         Timestamp: {}'''.format(*getInfo())

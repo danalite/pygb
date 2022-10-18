@@ -7,7 +7,7 @@ scriptFolder = os.path.dirname(os.path.realpath(__file__))
 os.chdir(scriptFolder)
 
 # Find version info from module (without importing the module):
-with open('pyautogui/__init__.py', 'r') as fd:
+with open('pygb/__init__.py', 'r') as fd:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                         fd.read(), re.MULTILINE).group(1)
 
@@ -16,25 +16,23 @@ with io.open("README.md", encoding="utf-8") as fileObj:
     long_description = fileObj.read()
 
 setup(
-    name='PyAutoGUI',
+    name='PyGB',
     version=version,
-    url='https://github.com/asweigart/pyautogui',
+    url='https://github.com/asweigart/pygb',
     author='Al Sweigart',
     author_email='al@inventwithpython.com',
-    description=('PyAutoGUI lets Python control the mouse and keyboard, and other GUI automation tasks. For Windows, macOS, and Linux, on Python 3 and 2.'),
+    description=('PyGB lets Python control the mouse and keyboard, and other GUI automation tasks. For Windows, macOS, and Linux, on Python 3 and 2.'),
     long_description=long_description,
     long_description_content_type="text/markdown",
     license='BSD',
-    packages=['pyautogui'],
+    packages=['pygb'],
     test_suite='tests',
     install_requires=['pyobjc-core;platform_system=="Darwin"',
                       'pyobjc;platform_system=="Darwin"',
                       'python3-Xlib;platform_system=="Linux" and python_version>="3.0"',
                       'python-xlib;platform_system=="Linux" and python_version<"3.0"',
-                      'pymsgbox',
                       'pytweening>=1.0.4',
                       'pyscreeze>=0.1.21',
-                      'pygetwindow>=0.0.5',
                       'mouseinfo'],
     keywords="gui automation test testing keyboard mouse cursor click press keystroke control",
     classifiers=[

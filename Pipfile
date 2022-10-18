@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 pytest = "*"
-pyautogui = {editable = true, path = "."}
+pygb = {editable = true, path = "."}
 pillow = "*"
 
 [requires]

@@ -1,18 +1,18 @@
-# Windows implementation of PyAutoGUI functions.
+# Windows implementation of PyGB functions.
 # BSD license
 # Al Sweigart al@inventwithpython.com
 
 import ctypes
 import ctypes.wintypes
-import pyautogui
-from pyautogui import LEFT, MIDDLE, RIGHT
+import pygb
+from pygb import LEFT, MIDDLE, RIGHT
 
 import sys
 if sys.platform !=  'win32':
-    raise Exception('The pyautogui_win module should only be loaded on a Windows system.')
+    raise Exception('The pygb_win module should only be loaded on a Windows system.')
 
 
-# Fixes the scaling issues where PyAutoGUI was reporting the wrong resolution:
+# Fixes the scaling issues where PyGB was reporting the wrong resolution:
 try:
    ctypes.windll.user32.SetProcessDPIAware()
 except AttributeError:
@@ -102,14 +102,14 @@ class INPUT(ctypes.Structure):
 
 
 
-""" Keyboard key mapping for pyautogui:
+""" Keyboard key mapping for pygb:
 Documented at http://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
 
-The *KB dictionaries in pyautogui map a string that can be passed to keyDown(),
+The *KB dictionaries in pygb map a string that can be passed to keyDown(),
 keyUp(), or press() into the code used for the OS-specific keyboard function.
 
 They should always be lowercase, and the same keys should be used across all OSes."""
-keyboardMapping = dict([(key, None) for key in pyautogui.KEY_NAMES])
+keyboardMapping = dict([(key, None) for key in pygb.KEY_NAMES])
 keyboardMapping.update({
     'backspace': 0x08, # VK_BACK
     '\b': 0x08, # VK_BACK
@@ -256,7 +256,7 @@ def _keyDown(key):
 
     Args:
       key (str): The key to be pressed down. The valid names are listed in
-      pyautogui.KEY_NAMES.
+      pygb.KEY_NAMES.
 
     Returns:
       None
@@ -264,7 +264,7 @@ def _keyDown(key):
     if key not in keyboardMapping or keyboardMapping[key] is None:
         return
 
-    needsShift = pyautogui.isShiftCharacter(key)
+    needsShift = pygb.isShiftCharacter(key)
 
     """
     # OLD CODE: The new code relies on having all keys be loaded in keyboardMapping from the start.
@@ -297,7 +297,7 @@ def _keyUp(key):
 
     Args:
       key (str): The key to be released up. The valid names are listed in
-      pyautogui.KEY_NAMES.
+      pygb.KEY_NAMES.
 
     Returns:
       None
@@ -305,7 +305,7 @@ def _keyUp(key):
     if key not in keyboardMapping or keyboardMapping[key] is None:
         return
 
-    needsShift = pyautogui.isShiftCharacter(key)
+    needsShift = pygb.isShiftCharacter(key)
     """
     # OLD CODE: The new code relies on having all keys be loaded in keyboardMapping from the start.
     if key in keyboardMapping.keys():
@@ -367,7 +367,7 @@ def _moveTo(x, y):
       None
     """
     ctypes.windll.user32.SetCursorPos(x, y)
-    # This was a possible solution to issue #314 https://github.com/asweigart/pyautogui/issues/314
+    # This was a possible solution to issue #314 https://github.com/asweigart/pygb/issues/314
     # but I'd like to hang on to SetCursorPos because mouse_event() has been superseded.
     #_sendMouseEvent(MOUSEEVENTF_MOVE + MOUSEEVENTF_ABSOLUTE, x, y)
 
@@ -397,7 +397,7 @@ def _mouseDown(x, y, button):
     try:
         _sendMouseEvent(EV, x, y)
     except (PermissionError, OSError):
-        # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pyautogui/issues/60
+        # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pygb/issues/60
         pass
 
 
@@ -425,7 +425,7 @@ def _mouseUp(x, y, button):
 
     try:
         _sendMouseEvent(EV, x, y)
-    except (PermissionError, OSError): # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pyautogui/issues/60
+    except (PermissionError, OSError): # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pygb/issues/60
         pass
 
 
@@ -454,7 +454,7 @@ def _click(x, y, button):
     try:
         _sendMouseEvent(EV, x, y)
     except (PermissionError, OSError):
-        # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pyautogui/issues/60
+        # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pygb/issues/60
         pass
 
 
@@ -494,7 +494,7 @@ def _sendMouseEvent(ev, x, y, dwData=0):
     convertedY = 65536 * y // height + 1
     ctypes.windll.user32.mouse_event(ev, ctypes.c_long(convertedX), ctypes.c_long(convertedY), dwData, 0)
 
-    # TODO: Too many false positives with this code: See: https://github.com/asweigart/pyautogui/issues/108
+    # TODO: Too many false positives with this code: See: https://github.com/asweigart/pygb/issues/108
     #if ctypes.windll.kernel32.GetLastError() != 0:
     #    raise ctypes.WinError()
 
@@ -532,7 +532,7 @@ def _scroll(clicks, x=None, y=None):
 
     try:
         _sendMouseEvent(MOUSEEVENTF_WHEEL, x, y, dwData=clicks)
-    except (PermissionError, OSError): # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pyautogui/issues/60
+    except (PermissionError, OSError): # TODO: We need to figure out how to prevent these errors, see https://github.com/asweigart/pygb/issues/60
             pass
 
 

@@ -13,67 +13,67 @@ For example:
 
 .. code:: python
 
-    >>> pyautogui.write('Hello world!')                 # prints out "Hello world!" instantly
-    >>> pyautogui.write('Hello world!', interval=0.25)  # prints out "Hello world!" with a quarter second delay after each character
+    >>> pygb.write('Hello world!')                 # prints out "Hello world!" instantly
+    >>> pygb.write('Hello world!', interval=0.25)  # prints out "Hello world!" with a quarter second delay after each character
 
 You can only press single-character keys with ``write()``, so you can't press the Shift or F1 keys, for example.
 
 The press(), keyDown(), and keyUp() Functions
 =============================================
 
-To press these keys, call the ``press()`` function and pass it a string from the ``pyautogui.KEYBOARD_KEYS`` such as ``enter``, ``esc``, ``f1``. See `KEYBOARD_KEYS`_.
+To press these keys, call the ``press()`` function and pass it a string from the ``pygb.KEYBOARD_KEYS`` such as ``enter``, ``esc``, ``f1``. See `KEYBOARD_KEYS`_.
 
 For example:
 
 .. code:: python
 
-    >>> pyautogui.press('enter')  # press the Enter key
-    >>> pyautogui.press('f1')     # press the F1 key
-    >>> pyautogui.press('left')   # press the left arrow key
+    >>> pygb.press('enter')  # press the Enter key
+    >>> pygb.press('f1')     # press the F1 key
+    >>> pygb.press('left')   # press the left arrow key
 
 The ``press()`` function is really just a wrapper for the ``keyDown()`` and ``keyUp()`` functions, which simulate pressing a key down and then releasing it up. These functions can be called by themselves. For example, to press the left arrow key three times while holding down the Shift key, call the following:
 
 .. code:: python
 
-    >>> pyautogui.keyDown('shift')  # hold down the shift key
-    >>> pyautogui.press('left')     # press the left arrow key
-    >>> pyautogui.press('left')     # press the left arrow key
-    >>> pyautogui.press('left')     # press the left arrow key
-    >>> pyautogui.keyUp('shift')    # release the shift key
+    >>> pygb.keyDown('shift')  # hold down the shift key
+    >>> pygb.press('left')     # press the left arrow key
+    >>> pygb.press('left')     # press the left arrow key
+    >>> pygb.press('left')     # press the left arrow key
+    >>> pygb.keyUp('shift')    # release the shift key
 
 To press multiple keys similar to what ``write()`` does, pass a list of strings to ``press()``. For example:
 
 .. code:: python
 
-    >>> pyautogui.press(['left', 'left', 'left'])
+    >>> pygb.press(['left', 'left', 'left'])
 
 Or you can set how many presses `left`:
 
 .. code:: python
 
-    >>> pyautogui.press('left', presses=3)
+    >>> pygb.press('left', presses=3)
 
 To add a delay interval in between each press, pass an int or float for the ``interval`` keyword argument.
 
 The hold() Context Manager
 ==========================
 
-To make holding a key convenient, the ``hold()`` function can be used as a context manager and passed a string from the ``pyautogui.KEYBOARD_KEYS`` such as ``shift``, ``ctrl``, ``alt``, and this key will be held for the duration of the ``with`` context block. See `KEYBOARD_KEYS`_.
+To make holding a key convenient, the ``hold()`` function can be used as a context manager and passed a string from the ``pygb.KEYBOARD_KEYS`` such as ``shift``, ``ctrl``, ``alt``, and this key will be held for the duration of the ``with`` context block. See `KEYBOARD_KEYS`_.
 
 .. code:: python
 
-    >>> with pyautogui.hold('shift'):
-            pyautogui.press(['left', 'left', 'left'])
+    >>> with pygb.hold('shift'):
+            pygb.press(['left', 'left', 'left'])
 
 . . .is equivalent to this code:
 
 .. code:: python
 
-    >>> pyautogui.keyDown('shift')  # hold down the shift key
-    >>> pyautogui.press('left')     # press the left arrow key
-    >>> pyautogui.press('left')     # press the left arrow key
-    >>> pyautogui.press('left')     # press the left arrow key
-    >>> pyautogui.keyUp('shift')    # release the shift key
+    >>> pygb.keyDown('shift')  # hold down the shift key
+    >>> pygb.press('left')     # press the left arrow key
+    >>> pygb.press('left')     # press the left arrow key
+    >>> pygb.press('left')     # press the left arrow key
+    >>> pygb.keyUp('shift')    # release the shift key
 
 The hotkey() Function
 =====================
@@ -82,18 +82,18 @@ To make pressing hotkeys or keyboard shortcuts convenient, the ``hotkey()`` can 
 
 .. code:: python
 
-    >>> pyautogui.hotkey('ctrl', 'shift', 'esc')
+    >>> pygb.hotkey('ctrl', 'shift', 'esc')
 
 . . .is equivalent to this code:
 
 .. code:: python
 
-    >>> pyautogui.keyDown('ctrl')
-    >>> pyautogui.keyDown('shift')
-    >>> pyautogui.keyDown('esc')
-    >>> pyautogui.keyUp('esc')
-    >>> pyautogui.keyUp('shift')
-    >>> pyautogui.keyUp('ctrl')
+    >>> pygb.keyDown('ctrl')
+    >>> pygb.keyDown('shift')
+    >>> pygb.keyDown('esc')
+    >>> pygb.keyUp('esc')
+    >>> pygb.keyUp('shift')
+    >>> pygb.keyUp('ctrl')
 
 To add a delay interval in between each press, pass an int or float for the ``interval`` keyword argument.
 

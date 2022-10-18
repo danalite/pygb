@@ -9,9 +9,9 @@ import unittest
 import doctest
 from collections import namedtuple  # Added in Python 2.6.
 
-import pyautogui
+import pygb
 
-# Make the cwd the folder that this test_pyautogui.py file resides in:
+# Make the cwd the folder that this test_pygb.py file resides in:
 scriptFolder = os.path.dirname(os.path.realpath(__file__))
 os.chdir(scriptFolder)
 
@@ -33,13 +33,6 @@ try:
 except:
     assert False, "The PyScreeze module must be installed to complete the tests: pip install pyscreeze"
 
-"""
-# TODO - pygetwindow is Windows-only for now, so don't require it for testing just yet.
-try:
-    import pygetwindow
-except:
-    assert False, 'The PyGetWindow module must be installed to complete the tests: pip install pygetwindow'
-"""
 
 # TODO - note that currently most of the click-related functionality is not tested.
 
@@ -91,97 +84,97 @@ class P(namedtuple("P", ["x", "y"])):
 
 class TestGeneral(unittest.TestCase):
     def setUp(self):
-        self.oldFailsafeSetting = pyautogui.FAILSAFE
-        pyautogui.FAILSAFE = False
-        pyautogui.moveTo(42, 42)  # make sure failsafe isn't triggered during this test
-        pyautogui.FAILSAFE = True
+        self.oldFailsafeSetting = pygb.FAILSAFE
+        pygb.FAILSAFE = False
+        pygb.moveTo(42, 42)  # make sure failsafe isn't triggered during this test
+        pygb.FAILSAFE = True
 
     def tearDown(self):
-        pyautogui.FAILSAFE = self.oldFailsafeSetting
+        pygb.FAILSAFE = self.oldFailsafeSetting
 
     def test_accessibleNames(self):
         # Check that all the functions are defined.
 
         # mouse-related API
-        pyautogui.moveTo
-        pyautogui.moveRel
-        pyautogui.dragTo
-        pyautogui.dragRel
-        pyautogui.mouseDown
-        pyautogui.mouseUp
-        pyautogui.click
-        pyautogui.rightClick
-        pyautogui.doubleClick
-        pyautogui.tripleClick
+        pygb.moveTo
+        pygb.moveRel
+        pygb.dragTo
+        pygb.dragRel
+        pygb.mouseDown
+        pygb.mouseUp
+        pygb.click
+        pygb.rightClick
+        pygb.doubleClick
+        pygb.tripleClick
 
         # keyboard-related API
-        pyautogui.typewrite
-        pyautogui.hotkey
-        pyautogui.keyDown
-        pyautogui.keyUp
-        pyautogui.press
-        pyautogui.hold
+        pygb.typewrite
+        pygb.hotkey
+        pygb.keyDown
+        pygb.keyUp
+        pygb.press
+        pygb.hold
 
-        # The functions implemented in the platform-specific modules should also show up in the pyautogui namespace:
-        pyautogui.position
-        pyautogui.size
-        pyautogui.scroll
-        pyautogui.hscroll
-        pyautogui.vscroll
+        # The functions implemented in the platform-specific modules should also show up in the pygb namespace:
+        pygb.position
+        pygb.size
+        pygb.scroll
+        pygb.hscroll
+        pygb.vscroll
 
         # util API
-        pyautogui.KEYBOARD_KEYS
-        pyautogui.isShiftCharacter
+        pygb.KEYBOARD_KEYS
+        pygb.isShiftCharacter
 
         # Screenshot-related API
-        pyautogui.locateAll
-        pyautogui.locate
-        pyautogui.locateOnScreen
-        pyautogui.locateAllOnScreen
-        pyautogui.locateCenterOnScreen
-        pyautogui.center
-        pyautogui.pixelMatchesColor
-        pyautogui.pixel
-        pyautogui.screenshot
-        pyautogui.grab
+        pygb.locateAll
+        pygb.locate
+        pygb.locateOnScreen
+        pygb.locateAllOnScreen
+        pygb.locateCenterOnScreen
+        pygb.center
+        pygb.pixelMatchesColor
+        pygb.pixel
+        pygb.screenshot
+        pygb.grab
 
         # TODO(denilsonsa): I believe we should get rid of these symbols. If someone wants tweening, import pytweening module instead!
         # Tweening-related API
-        pyautogui.getPointOnLine
-        pyautogui.linear
-        pyautogui.easeInQuad
-        pyautogui.easeOutQuad
-        pyautogui.easeInOutQuad
-        pyautogui.easeInCubic
-        pyautogui.easeOutCubic
-        pyautogui.easeInOutCubic
-        pyautogui.easeInQuart
-        pyautogui.easeOutQuart
-        pyautogui.easeInOutQuart
-        pyautogui.easeInQuint
-        pyautogui.easeOutQuint
-        pyautogui.easeInOutQuint
-        pyautogui.easeInSine
-        pyautogui.easeOutSine
-        pyautogui.easeInOutSine
-        pyautogui.easeInExpo
-        pyautogui.easeOutExpo
-        pyautogui.easeInOutExpo
-        pyautogui.easeInCirc
-        pyautogui.easeOutCirc
-        pyautogui.easeInOutCirc
-        pyautogui.easeInElastic
-        pyautogui.easeOutElastic
-        pyautogui.easeInOutElastic
-        pyautogui.easeInBack
-        pyautogui.easeOutBack
-        pyautogui.easeInOutBack
-        pyautogui.easeInBounce
-        pyautogui.easeOutBounce
-        pyautogui.easeInOutBounce
+        pygb.getPointOnLine
+        pygb.linear
+        pygb.easeInQuad
+        pygb.easeOutQuad
+        pygb.easeInOutQuad
+        pygb.easeInCubic
+        pygb.easeOutCubic
+        pygb.easeInOutCubic
+        pygb.easeInQuart
+        pygb.easeOutQuart
+        pygb.easeInOutQuart
+        pygb.easeInQuint
+        pygb.easeOutQuint
+        pygb.easeInOutQuint
+        pygb.easeInSine
+        pygb.easeOutSine
+        pygb.easeInOutSine
+        pygb.easeInExpo
+        pygb.easeOutExpo
+        pygb.easeInOutExpo
+        pygb.easeInCirc
+        pygb.easeOutCirc
+        pygb.easeInOutCirc
+        pygb.easeInElastic
+        pygb.easeOutElastic
+        pygb.easeInOutElastic
+        pygb.easeInBack
+        pygb.easeOutBack
+        pygb.easeInOutBack
+        pygb.easeInBounce
+        pygb.easeOutBounce
+        pygb.easeInOutBounce
 
     def test_size(self):
-        width, height = pyautogui.size()
+        width, height = pygb.size()
 
         self.assertTrue(isinstance(width, int), "Type of width is %s" % (type(width)))
         self.assertTrue(isinstance(height, int), "Type of height is %s" % (type(height)))
@@ -189,18 +182,18 @@ class TestGeneral(unittest.TestCase):
         self.assertTrue(height > 0, "Height is set to %s" % (height))
 
     def test_position(self):
-        mousex, mousey = pyautogui.position()
+        mousex, mousey = pygb.position()
 
         self.assertTrue(isinstance(mousex, int), "Type of mousex is %s" % (type(mousex)))
         self.assertTrue(isinstance(mousey, int), "Type of mousey is %s" % (type(mousey)))
 
         # Test passing x and y arguments to position().
-        pyautogui.moveTo(mousex + 1, mousey + 1)
-        x, y = pyautogui.position(mousex, None)
+        pygb.moveTo(mousex + 1, mousey + 1)
+        x, y = pygb.position(mousex, None)
         self.assertEqual(x, mousex)
         self.assertNotEqual(y, mousey)
 
-        x, y = pyautogui.position(None, mousey)
+        x, y = pygb.position(None, mousey)
         self.assertNotEqual(x, mousex)
         self.assertEqual(y, mousey)
 
@@ -208,7 +201,7 @@ class TestGeneral(unittest.TestCase):
         zero = P(0, 0)
         xone = P(1, 0)
         yone = P(0, 1)
-        size = P(*pyautogui.size())
+        size = P(*pygb.size())
         half = size / 2
 
         on_screen = [zero, zero + xone, zero + yone, zero + xone + yone, half, size - xone - yone]
@@ -218,60 +211,60 @@ class TestGeneral(unittest.TestCase):
             for coord in coords:
                 self.assertEqual(
                     value,
-                    pyautogui.onScreen(*coord),
+                    pygb.onScreen(*coord),
                     "onScreen({0}, {1}) should be {2}".format(coord.x, coord.y, value),
                 )
                 self.assertEqual(
                     value,
-                    pyautogui.onScreen(list(coord)),
+                    pygb.onScreen(list(coord)),
                     "onScreen([{0}, {1}]) should be {2}".format(coord.x, coord.y, value),
                 )
                 self.assertEqual(
                     value,
-                    pyautogui.onScreen(tuple(coord)),
+                    pygb.onScreen(tuple(coord)),
                     "onScreen(({0}, {1})) should be {2}".format(coord.x, coord.y, value),
                 )
                 self.assertEqual(
-                    value, pyautogui.onScreen(coord), "onScreen({0}) should be {1}".format(repr(coord), value)
+                    value, pygb.onScreen(coord), "onScreen({0}) should be {1}".format(repr(coord), value)
                 )
 
-        # These raise PyAutoGUIException.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui.onScreen([0, 0], 0)
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui.onScreen((0, 0), 0)
+        # These raise PyGBException.
+        with self.assertRaises(pygb.PyGBException):
+            pygb.onScreen([0, 0], 0)
+        with self.assertRaises(pygb.PyGBException):
+            pygb.onScreen((0, 0), 0)
 
     def test_pause(self):
-        oldValue = pyautogui.PAUSE
+        oldValue = pygb.PAUSE
 
         startTime = time.time()
-        pyautogui.PAUSE = 0.35  # there should be a 0.35 second pause after each call
-        pyautogui.moveTo(1, 1)
-        pyautogui.moveRel(0, 1)
-        pyautogui.moveTo(1, 1)
+        pygb.PAUSE = 0.35  # there should be a 0.35 second pause after each call
+        pygb.moveTo(1, 1)
+        pygb.moveRel(0, 1)
+        pygb.moveTo(1, 1)
 
         elapsed = time.time() - startTime
         self.assertTrue(1.0 < elapsed < 1.1, "Took %s seconds, expected 1.0 < 1.1 seconds." % (elapsed))
 
-        pyautogui.PAUSE = oldValue  # restore the old PAUSE value
+        pygb.PAUSE = oldValue  # restore the old PAUSE value
 
 
 class TestHelperFunctions(unittest.TestCase):
     def test__normalizeXYArgs(self):
-        self.assertEqual(pyautogui._normalizeXYArgs(1, 2), pyautogui.Point(x=1, y=2))
-        self.assertEqual(pyautogui._normalizeXYArgs((1, 2), None), pyautogui.Point(x=1, y=2))
-        self.assertEqual(pyautogui._normalizeXYArgs([1, 2], None), pyautogui.Point(x=1, y=2))
+        self.assertEqual(pygb._normalizeXYArgs(1, 2), pygb.Point(x=1, y=2))
+        self.assertEqual(pygb._normalizeXYArgs((1, 2), None), pygb.Point(x=1, y=2))
+        self.assertEqual(pygb._normalizeXYArgs([1, 2], None), pygb.Point(x=1, y=2))
 
-        pyautogui.useImageNotFoundException()
-        with self.assertRaises(pyautogui.ImageNotFoundException):
-            pyautogui._normalizeXYArgs("100x100blueimage.png", None)
-        pyautogui.useImageNotFoundException(False)
-        self.assertEqual(pyautogui._normalizeXYArgs("100x100blueimage.png", None), None)
+        pygb.useImageNotFoundException()
+        with self.assertRaises(pygb.ImageNotFoundException):
+            pygb._normalizeXYArgs("100x100blueimage.png", None)
+        pygb.useImageNotFoundException(False)
+        self.assertEqual(pygb._normalizeXYArgs("100x100blueimage.png", None), None)
 
 
 class TestDoctests(unittest.TestCase):
     def test_doctests(self):
-        doctest.testmod(pyautogui)
+        doctest.testmod(pygb)
 
 
 class TestMouse(unittest.TestCase):
@@ -289,56 +282,56 @@ class TestMouse(unittest.TestCase):
     ]
 
     def setUp(self):
-        self.oldFailsafeSetting = pyautogui.FAILSAFE
-        self.center = P(*pyautogui.size()) // 2
+        self.oldFailsafeSetting = pygb.FAILSAFE
+        self.center = P(*pygb.size()) // 2
 
-        pyautogui.FAILSAFE = False
-        pyautogui.moveTo(*self.center)  # make sure failsafe isn't triggered during this test
-        pyautogui.FAILSAFE = True
+        pygb.FAILSAFE = False
+        pygb.moveTo(*self.center)  # make sure failsafe isn't triggered during this test
+        pygb.FAILSAFE = True
 
     def tearDown(self):
-        pyautogui.FAILSAFE = self.oldFailsafeSetting
+        pygb.FAILSAFE = self.oldFailsafeSetting
 
     def test_moveTo(self):
         # moving the mouse
         desired = self.center
-        pyautogui.moveTo(*desired)
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(*desired)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # no coordinate specified (should be a NO-OP)
-        pyautogui.moveTo(None, None)
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(None, None)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # moving the mouse to a new location
         desired += P(42, 42)
-        pyautogui.moveTo(*desired)
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(*desired)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # moving the mouse over time (1/5 second)
         desired -= P(42, 42)
-        pyautogui.moveTo(desired.x, desired.y, duration=0.2)
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(desired.x, desired.y, duration=0.2)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # Passing a list instead of separate x and y.
         desired += P(42, 42)
-        pyautogui.moveTo(list(desired))
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(list(desired))
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # Passing a tuple instead of separate x and y.
         desired += P(42, 42)
-        pyautogui.moveTo(tuple(desired))
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(tuple(desired))
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # Passing a sequence-like object instead of separate x and y.
         desired -= P(42, 42)
-        pyautogui.moveTo(desired)
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(desired)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
     def test_moveToWithTween(self):
@@ -346,15 +339,15 @@ class TestMouse(unittest.TestCase):
         destination = self.center + P(100, 100)
 
         def resetMouse():
-            pyautogui.moveTo(*origin)
-            mousepos = P(*pyautogui.position())
+            pygb.moveTo(*origin)
+            mousepos = P(*pygb.position())
             self.assertEqual(mousepos, origin)
 
         for tweenName in self.TWEENS:
-            tweenFunc = getattr(pyautogui, tweenName)
+            tweenFunc = getattr(pygb, tweenName)
             resetMouse()
-            pyautogui.moveTo(destination.x, destination.y, duration=pyautogui.MINIMUM_DURATION * 2, tween=tweenFunc)
-            mousepos = P(*pyautogui.position())
+            pygb.moveTo(destination.x, destination.y, duration=pygb.MINIMUM_DURATION * 2, tween=tweenFunc)
+            mousepos = P(*pygb.position())
             self.assertEqual(
                 mousepos,
                 destination,
@@ -364,62 +357,62 @@ class TestMouse(unittest.TestCase):
     def test_moveRel(self):
         # start at the center
         desired = self.center
-        pyautogui.moveTo(*desired)
-        mousepos = P(*pyautogui.position())
+        pygb.moveTo(*desired)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # move down and right
         desired += P(42, 42)
-        pyautogui.moveRel(42, 42)
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel(42, 42)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # move up and left
         desired -= P(42, 42)
-        pyautogui.moveRel(-42, -42)
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel(-42, -42)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # move right
         desired += P(42, 0)
-        pyautogui.moveRel(42, 0)
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel(42, 0)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # move down
         desired += P(0, 42)
-        pyautogui.moveRel(0, 42)
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel(0, 42)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # move left
         desired += P(-42, 0)
-        pyautogui.moveRel(-42, 0)
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel(-42, 0)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # move up
         desired += P(0, -42)
-        pyautogui.moveRel(0, -42)
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel(0, -42)
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # Passing a list instead of separate x and y.
         desired += P(42, 42)
-        pyautogui.moveRel([42, 42])
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel([42, 42])
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # Passing a tuple instead of separate x and y.
         desired -= P(42, 42)
-        pyautogui.moveRel((-42, -42))
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel((-42, -42))
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
         # Passing a sequence-like object instead of separate x and y.
         desired += P(42, 42)
-        pyautogui.moveRel(P(42, 42))
-        mousepos = P(*pyautogui.position())
+        pygb.moveRel(P(42, 42))
+        mousepos = P(*pygb.position())
         self.assertEqual(mousepos, desired)
 
     def test_moveRelWithTween(self):
@@ -428,15 +421,15 @@ class TestMouse(unittest.TestCase):
         destination = origin + delta
 
         def resetMouse():
-            pyautogui.moveTo(*origin)
-            mousepos = P(*pyautogui.position())
+            pygb.moveTo(*origin)
+            mousepos = P(*pygb.position())
             self.assertEqual(mousepos, origin)
 
         for tweenName in self.TWEENS:
-            tweenFunc = getattr(pyautogui, tweenName)
+            tweenFunc = getattr(pygb, tweenName)
             resetMouse()
-            pyautogui.moveRel(delta.x, delta.y, duration=pyautogui.MINIMUM_DURATION * 2, tween=tweenFunc)
-            mousepos = P(*pyautogui.position())
+            pygb.moveRel(delta.x, delta.y, duration=pygb.MINIMUM_DURATION * 2, tween=tweenFunc)
+            mousepos = P(*pygb.position())
             self.assertEqual(
                 mousepos,
                 destination,
@@ -445,114 +438,114 @@ class TestMouse(unittest.TestCase):
 
     def test_scroll(self):
         # TODO - currently this just checks that scrolling doesn't result in an error.
-        pyautogui.scroll(1)
-        pyautogui.scroll(-1)
-        pyautogui.hscroll(1)
-        pyautogui.hscroll(-1)
-        pyautogui.vscroll(1)
-        pyautogui.vscroll(-1)
+        pygb.scroll(1)
+        pygb.scroll(-1)
+        pygb.hscroll(1)
+        pygb.hscroll(-1)
+        pygb.vscroll(1)
+        pygb.vscroll(-1)
 
 
 class TestRun(unittest.TestCase):
     def test_getNumberToken(self):
-        self.assertEqual(pyautogui._getNumberToken("5hello"), "5")
-        self.assertEqual(pyautogui._getNumberToken("-5hello"), "-5")
-        self.assertEqual(pyautogui._getNumberToken("+5hello"), "+5")
-        self.assertEqual(pyautogui._getNumberToken("5.5hello"), "5.5")
-        self.assertEqual(pyautogui._getNumberToken("+5.5hello"), "+5.5")
-        self.assertEqual(pyautogui._getNumberToken("-5.5hello"), "-5.5")
-        self.assertEqual(pyautogui._getNumberToken("  5hello"), "  5")
-        self.assertEqual(pyautogui._getNumberToken("  -5hello"), "  -5")
-        self.assertEqual(pyautogui._getNumberToken("  +5hello"), "  +5")
-        self.assertEqual(pyautogui._getNumberToken("  5.5hello"), "  5.5")
-        self.assertEqual(pyautogui._getNumberToken("  +5.5hello"), "  +5.5")
-        self.assertEqual(pyautogui._getNumberToken("  -5.5hello"), "  -5.5")
+        self.assertEqual(pygb._getNumberToken("5hello"), "5")
+        self.assertEqual(pygb._getNumberToken("-5hello"), "-5")
+        self.assertEqual(pygb._getNumberToken("+5hello"), "+5")
+        self.assertEqual(pygb._getNumberToken("5.5hello"), "5.5")
+        self.assertEqual(pygb._getNumberToken("+5.5hello"), "+5.5")
+        self.assertEqual(pygb._getNumberToken("-5.5hello"), "-5.5")
+        self.assertEqual(pygb._getNumberToken("  5hello"), "  5")
+        self.assertEqual(pygb._getNumberToken("  -5hello"), "  -5")
+        self.assertEqual(pygb._getNumberToken("  +5hello"), "  +5")
+        self.assertEqual(pygb._getNumberToken("  5.5hello"), "  5.5")
+        self.assertEqual(pygb._getNumberToken("  +5.5hello"), "  +5.5")
+        self.assertEqual(pygb._getNumberToken("  -5.5hello"), "  -5.5")
 
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getNumberToken("")  # Blank string and no number.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getNumberToken("hello")  # Missing a number.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getNumberToken("    ")  # Missing a number.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getNumberToken("hello 42")  # Number is not at the start.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getNumberToken("")  # Blank string and no number.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getNumberToken("hello")  # Missing a number.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getNumberToken("    ")  # Missing a number.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getNumberToken("hello 42")  # Number is not at the start.
 
     def test_getQuotedStringToken(self):
-        self.assertEqual(pyautogui._getQuotedStringToken("'hello'world"), "'hello'")
-        self.assertEqual(pyautogui._getQuotedStringToken("''world"), "''")
-        self.assertEqual(pyautogui._getQuotedStringToken("  'hello'world"), "  'hello'")
+        self.assertEqual(pygb._getQuotedStringToken("'hello'world"), "'hello'")
+        self.assertEqual(pygb._getQuotedStringToken("''world"), "''")
+        self.assertEqual(pygb._getQuotedStringToken("  'hello'world"), "  'hello'")
 
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken("xyz")  # No quotes.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken("xyz")  # No quotes.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken("  xyz")  # No quotes, spaces in front.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken("'xyz")  # Start quote only.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken("xyz'")  # End quote only.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken('"xyz"')  # Double quotes don't count.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken("")  # Blank string.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getQuotedStringToken("xyz 'hello'")  # Quoted string is not at the start.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken("xyz")  # No quotes.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken("xyz")  # No quotes.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken("  xyz")  # No quotes, spaces in front.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken("'xyz")  # Start quote only.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken("xyz'")  # End quote only.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken('"xyz"')  # Double quotes don't count.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken("")  # Blank string.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getQuotedStringToken("xyz 'hello'")  # Quoted string is not at the start.
 
     def test_getCommaToken(self):
-        self.assertEqual(pyautogui._getCommaToken(","), ",")
-        self.assertEqual(pyautogui._getCommaToken("  ,"), "  ,")
+        self.assertEqual(pygb._getCommaToken(","), ",")
+        self.assertEqual(pygb._getCommaToken("  ,"), "  ,")
 
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getCommaToken("")  # Blank string.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getCommaToken("hello,")  # Comma is not at the start.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getCommaToken("hello")  # No comma.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getCommaToken("    ")  # No comma.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getCommaToken("")  # Blank string.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getCommaToken("hello,")  # Comma is not at the start.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getCommaToken("hello")  # No comma.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getCommaToken("    ")  # No comma.
 
     def test_getParensCommandStrToken(self):
-        self.assertEqual(pyautogui._getParensCommandStrToken("()"), "()")
-        self.assertEqual(pyautogui._getParensCommandStrToken("  ()"), "  ()")
-        self.assertEqual(pyautogui._getParensCommandStrToken("()hello"), "()")
-        self.assertEqual(pyautogui._getParensCommandStrToken("  ()hello"), "  ()")
-        self.assertEqual(pyautogui._getParensCommandStrToken("(hello)world"), "(hello)")
-        self.assertEqual(pyautogui._getParensCommandStrToken("  (hello)world"), "  (hello)")
-        self.assertEqual(pyautogui._getParensCommandStrToken("(he(ll)(o))world"), "(he(ll)(o))")
-        self.assertEqual(pyautogui._getParensCommandStrToken("  (he(ll)(o))world"), "  (he(ll)(o))")
+        self.assertEqual(pygb._getParensCommandStrToken("()"), "()")
+        self.assertEqual(pygb._getParensCommandStrToken("  ()"), "  ()")
+        self.assertEqual(pygb._getParensCommandStrToken("()hello"), "()")
+        self.assertEqual(pygb._getParensCommandStrToken("  ()hello"), "  ()")
+        self.assertEqual(pygb._getParensCommandStrToken("(hello)world"), "(hello)")
+        self.assertEqual(pygb._getParensCommandStrToken("  (hello)world"), "  (hello)")
+        self.assertEqual(pygb._getParensCommandStrToken("(he(ll)(o))world"), "(he(ll)(o))")
+        self.assertEqual(pygb._getParensCommandStrToken("  (he(ll)(o))world"), "  (he(ll)(o))")
 
         self.assertEqual(
-            pyautogui._getParensCommandStrToken("(he(ll)(o)))world"), "(he(ll)(o))"
+            pygb._getParensCommandStrToken("(he(ll)(o)))world"), "(he(ll)(o))"
         )  # Extra close parentheses.
         self.assertEqual(
-            pyautogui._getParensCommandStrToken("  (he(ll)(o)))world"), "  (he(ll)(o))"
+            pygb._getParensCommandStrToken("  (he(ll)(o)))world"), "  (he(ll)(o))"
         )  # Extra close parentheses.
 
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getParensCommandStrToken("")  # Blank string.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getParensCommandStrToken("  ")  # No parens.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getParensCommandStrToken("hello")  # No parens
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getParensCommandStrToken(" (")  # No close parenthesis.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getParensCommandStrToken("(he(ll)o")  # Not enough close parentheses.
-        with self.assertRaises(pyautogui.PyAutoGUIException):
-            pyautogui._getParensCommandStrToken("")  # Blank string.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getParensCommandStrToken("")  # Blank string.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getParensCommandStrToken("  ")  # No parens.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getParensCommandStrToken("hello")  # No parens
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getParensCommandStrToken(" (")  # No close parenthesis.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getParensCommandStrToken("(he(ll)o")  # Not enough close parentheses.
+        with self.assertRaises(pygb.PyGBException):
+            pygb._getParensCommandStrToken("")  # Blank string.
 
     def test_tokenizeCommandStr(self):
-        self.assertEqual(pyautogui._tokenizeCommandStr(""), [])  # Empty command string.
-        self.assertEqual(pyautogui._tokenizeCommandStr("  "), [])  # Whitespace only command string.
-        self.assertEqual(pyautogui._tokenizeCommandStr("c"), ["c"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("  c  "), ["c"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("ccc"), ["c", "c", "c"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("  c  c  c  "), ["c", "c", "c"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("clmr"), ["c", "l", "m", "r"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("susdss"), ["su", "sd", "ss"])
-        self.assertEqual(pyautogui._tokenizeCommandStr(" su sd ss "), ["su", "sd", "ss"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("clmrsusdss"), ["c", "l", "m", "r", "su", "sd", "ss"])
+        self.assertEqual(pygb._tokenizeCommandStr(""), [])  # Empty command string.
+        self.assertEqual(pygb._tokenizeCommandStr("  "), [])  # Whitespace only command string.
+        self.assertEqual(pygb._tokenizeCommandStr("c"), ["c"])
+        self.assertEqual(pygb._tokenizeCommandStr("  c  "), ["c"])
+        self.assertEqual(pygb._tokenizeCommandStr("ccc"), ["c", "c", "c"])
+        self.assertEqual(pygb._tokenizeCommandStr("  c  c  c  "), ["c", "c", "c"])
+        self.assertEqual(pygb._tokenizeCommandStr("clmr"), ["c", "l", "m", "r"])
+        self.assertEqual(pygb._tokenizeCommandStr("susdss"), ["su", "sd", "ss"])
+        self.assertEqual(pygb._tokenizeCommandStr(" su sd ss "), ["su", "sd", "ss"])
+        self.assertEqual(pygb._tokenizeCommandStr("clmrsusdss"), ["c", "l", "m", "r", "su", "sd", "ss"])
 
         # Do a whole bunch of tests with random no-argument commands with random whitespace.
         random.seed(42)
@@ -571,49 +564,49 @@ class TestRun(unittest.TestCase):
                 commandStr.append(command)
                 commandStr.append(" " * random.randint(0, 9))
             commandStr = "".join(commandStr)
-            self.assertEqual(pyautogui._tokenizeCommandStr(commandStr), commands)
+            self.assertEqual(pygb._tokenizeCommandStr(commandStr), commands)
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("g10,10"), ["g", "10", "10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g 10,10"), ["g", "10", "10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g10 ,10"), ["g", "10", "10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g10, 10"), ["g", "10", "10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr(" g 10 , 10 "), ["g", "10", "10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("  g  10  ,  10  "), ["g", "10", "10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g10,10"), ["g", "10", "10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g 10,10"), ["g", "10", "10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g10 ,10"), ["g", "10", "10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g10, 10"), ["g", "10", "10"])
+        self.assertEqual(pygb._tokenizeCommandStr(" g 10 , 10 "), ["g", "10", "10"])
+        self.assertEqual(pygb._tokenizeCommandStr("  g  10  ,  10  "), ["g", "10", "10"])
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("g+10,+10"), ["g", "+10", "+10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g +10,+10"), ["g", "+10", "+10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g+10 ,+10"), ["g", "+10", "+10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g+10, +10"), ["g", "+10", "+10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr(" g +10 , +10 "), ["g", "+10", "+10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("  g  +10  ,  +10  "), ["g", "+10", "+10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g+10,+10"), ["g", "+10", "+10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g +10,+10"), ["g", "+10", "+10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g+10 ,+10"), ["g", "+10", "+10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g+10, +10"), ["g", "+10", "+10"])
+        self.assertEqual(pygb._tokenizeCommandStr(" g +10 , +10 "), ["g", "+10", "+10"])
+        self.assertEqual(pygb._tokenizeCommandStr("  g  +10  ,  +10  "), ["g", "+10", "+10"])
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("g-10,-10"), ["g", "-10", "-10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g -10,-10"), ["g", "-10", "-10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g-10 ,-10"), ["g", "-10", "-10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("g-10, -10"), ["g", "-10", "-10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr(" g -10 , -10 "), ["g", "-10", "-10"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("  g  -10  ,  -10  "), ["g", "-10", "-10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g-10,-10"), ["g", "-10", "-10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g -10,-10"), ["g", "-10", "-10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g-10 ,-10"), ["g", "-10", "-10"])
+        self.assertEqual(pygb._tokenizeCommandStr("g-10, -10"), ["g", "-10", "-10"])
+        self.assertEqual(pygb._tokenizeCommandStr(" g -10 , -10 "), ["g", "-10", "-10"])
+        self.assertEqual(pygb._tokenizeCommandStr("  g  -10  ,  -10  "), ["g", "-10", "-10"])
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("d10,10"), ["d", "10", "10"])
+        self.assertEqual(pygb._tokenizeCommandStr("d10,10"), ["d", "10", "10"])
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("d1,2g3,4"), ["d", "1", "2", "g", "3", "4"])
+        self.assertEqual(pygb._tokenizeCommandStr("d1,2g3,4"), ["d", "1", "2", "g", "3", "4"])
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("w'hello'"), ["w", "hello"])
+        self.assertEqual(pygb._tokenizeCommandStr("w'hello'"), ["w", "hello"])
 
         self.assertEqual(
-            pyautogui._tokenizeCommandStr("d1,2w'hello'g3,4"), ["d", "1", "2", "w", "hello", "g", "3", "4"]
+            pygb._tokenizeCommandStr("d1,2w'hello'g3,4"), ["d", "1", "2", "w", "hello", "g", "3", "4"]
         )
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("s42"), ["s", "42"])
-        self.assertEqual(pyautogui._tokenizeCommandStr("s42.3"), ["s", "42.3"])
+        self.assertEqual(pygb._tokenizeCommandStr("s42"), ["s", "42"])
+        self.assertEqual(pygb._tokenizeCommandStr("s42.3"), ["s", "42.3"])
 
-        self.assertEqual(pyautogui._tokenizeCommandStr("f10(c)"), ["f", "10", ["c"]])
-        self.assertEqual(pyautogui._tokenizeCommandStr("f10(lmr)"), ["f", "10", ["l", "m", "r"]])
-        self.assertEqual(pyautogui._tokenizeCommandStr("f10(f5(cc))"), ["f", "10", ["f", "5", ["c", "c"]]])
+        self.assertEqual(pygb._tokenizeCommandStr("f10(c)"), ["f", "10", ["c"]])
+        self.assertEqual(pygb._tokenizeCommandStr("f10(lmr)"), ["f", "10", ["l", "m", "r"]])
+        self.assertEqual(pygb._tokenizeCommandStr("f10(f5(cc))"), ["f", "10", ["f", "5", ["c", "c"]]])
 
         # TODO add negative cases
 
-        # TODO add mocks for pyautogui for this.
+        # TODO add mocks for pygb for this.
 
 
 class TypewriteThread(threading.Thread):
@@ -624,7 +617,7 @@ class TypewriteThread(threading.Thread):
 
     def run(self):
         time.sleep(0.25)  # NOTE: BE SURE TO ACCOUNT FOR THIS QUARTER SECOND FOR TIMING TESTS!
-        pyautogui.typewrite(self.msg, self.interval)
+        pygb.typewrite(self.msg, self.interval)
 
 
 class PressThread(threading.Thread):
@@ -634,7 +627,7 @@ class PressThread(threading.Thread):
 
     def run(self):
         time.sleep(0.25)  # NOTE: BE SURE TO ACCOUNT FOR THIS QUARTER SECOND FOR TIMING TESTS!
-        pyautogui.press(self.keysArg)
+        pygb.press(self.keysArg)
 
 
 class HoldThread(threading.Thread):
@@ -646,9 +639,9 @@ class HoldThread(threading.Thread):
 
     def run(self):
         time.sleep(0.25)  # NOTE: BE SURE TO ACCOUNT FOR THIS QUARTER SECOND FOR TIMING TESTS!
-        with pyautogui.hold(self.holdKeysArg):
+        with pygb.hold(self.holdKeysArg):
             if self.pressKeysArg is not None:
-                pyautogui.press(self.pressKeysArg)
+                pygb.press(self.pressKeysArg)
             else:
                 pass
 
@@ -658,13 +651,13 @@ class TestKeyboard(unittest.TestCase):
     # You cannot run this as a scheduled task or remotely.
 
     def setUp(self):
-        self.oldFailsafeSetting = pyautogui.FAILSAFE
-        pyautogui.FAILSAFE = False
-        pyautogui.moveTo(42, 42)  # make sure failsafe isn't triggered during this test
-        pyautogui.FAILSAFE = True
+        self.oldFailsafeSetting = pygb.FAILSAFE
+        pygb.FAILSAFE = False
+        pygb.moveTo(42, 42)  # make sure failsafe isn't triggered during this test
+        pygb.FAILSAFE = True
 
     def tearDown(self):
-        pyautogui.FAILSAFE = self.oldFailsafeSetting
+        pygb.FAILSAFE = self.oldFailsafeSetting
 
     def test_typewrite(self):
         # 'Hello world!\n' test
@@ -692,7 +685,7 @@ class TestKeyboard(unittest.TestCase):
 
     def checkForValidCharacters(self, msg):
         for c in msg:
-            self.assertTrue(pyautogui.isValidKey(c), '"%c" is not a valid key on platform %s' % (c, sys.platform))
+            self.assertTrue(pygb.isValidKey(c), '"%c" is not a valid key on platform %s' % (c, sys.platform))
 
     def test_typewrite_slow(self):
 
@@ -798,79 +791,79 @@ class TestKeyboard(unittest.TestCase):
 
     def test_isShiftCharacter(self):
         for char in "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + '~!@#$%^&*()_+{}|:"<>?':
-            self.assertTrue(pyautogui.isShiftCharacter(char))
+            self.assertTrue(pygb.isShiftCharacter(char))
         for char in "abcdefghijklmnopqrstuvwxyz" + " `1234567890-=,./;'[]\\":
-            self.assertFalse(pyautogui.isShiftCharacter(char))
+            self.assertFalse(pygb.isShiftCharacter(char))
 
 
 class TestFailSafe(unittest.TestCase):
     def test_failsafe(self):
-        self.oldFailsafeSetting = pyautogui.FAILSAFE
+        self.oldFailsafeSetting = pygb.FAILSAFE
 
-        pyautogui.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with
-        for x, y in pyautogui.FAILSAFE_POINTS:
-            pyautogui.FAILSAFE = True
+        pygb.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with
+        for x, y in pygb.FAILSAFE_POINTS:
+            pygb.FAILSAFE = True
             # When move(), moveTo(), drag(), or dragTo() moves the mouse to a
             # failsafe point, it shouldn't raise the fail safe. (This would
             # be annoying. Only a human moving the mouse to a failsafe point
             # should trigger the failsafe.)
-            pyautogui.moveTo(x, y)
+            pygb.moveTo(x, y)
 
-            pyautogui.FAILSAFE = False
-            pyautogui.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with (for the next iteration)
+            pygb.FAILSAFE = False
+            pygb.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with (for the next iteration)
 
-        pyautogui.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with
-        for x, y in pyautogui.FAILSAFE_POINTS:
-            pyautogui.FAILSAFE = True
-            pyautogui.moveTo(x, y)  # This line should not cause the fail safe exception to be raised.
+        pygb.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with
+        for x, y in pygb.FAILSAFE_POINTS:
+            pygb.FAILSAFE = True
+            pygb.moveTo(x, y)  # This line should not cause the fail safe exception to be raised.
 
-            # A second pyautogui function call to do something while the cursor is in a fail safe point SHOULD raise the failsafe:
-            self.assertRaises(pyautogui.FailSafeException, pyautogui.press, "esc")
+            # A second pygb function call to do something while the cursor is in a fail safe point SHOULD raise the failsafe:
+            self.assertRaises(pygb.FailSafeException, pygb.press, "esc")
 
-            pyautogui.FAILSAFE = False
-            pyautogui.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with (for the next iteration)
+            pygb.FAILSAFE = False
+            pygb.moveTo(1, 1)  # make sure mouse is not in failsafe position to begin with (for the next iteration)
 
-        for x, y in pyautogui.FAILSAFE_POINTS:
-            pyautogui.FAILSAFE = False
-            pyautogui.moveTo(x, y)  # This line should not cause the fail safe exception to be raised.
+        for x, y in pygb.FAILSAFE_POINTS:
+            pygb.FAILSAFE = False
+            pygb.moveTo(x, y)  # This line should not cause the fail safe exception to be raised.
 
             # This line shouldn't cause a failsafe to trigger because FAILSAFE is set to False.
-            pyautogui.press("esc")
+            pygb.press("esc")
 
-        pyautogui.FAILSAFE = self.oldFailsafeSetting
+        pygb.FAILSAFE = self.oldFailsafeSetting
 
 
 class TestPyScreezeFunctions(unittest.TestCase):
     def test_locateFunctions(self):
-        # TODO - for now, we only test that the "return None" and "raise pyautogui.ImageNotFoundException" is raised.
+        # TODO - for now, we only test that the "return None" and "raise pygb.ImageNotFoundException" is raised.
 
-        pyautogui.useImageNotFoundException()
-        with self.assertRaises(pyautogui.ImageNotFoundException):
-            pyautogui.locate("100x100blueimage.png", "100x100redimage.png")
+        pygb.useImageNotFoundException()
+        with self.assertRaises(pygb.ImageNotFoundException):
+            pygb.locate("100x100blueimage.png", "100x100redimage.png")
         # Commenting out the locateAll*() functions because they return generators, even if the image can't be found. Should they instead raise an exception? This is a question for pyscreeze's design.
-        # with self.assertRaises(pyautogui.ImageNotFoundException):
-        #    pyautogui.locateAll('100x100blueimage.png', '100x100redimage.png')
+        # with self.assertRaises(pygb.ImageNotFoundException):
+        #    pygb.locateAll('100x100blueimage.png', '100x100redimage.png')
 
-        # with self.assertRaises(pyautogui.ImageNotFoundException):
-        #    pyautogui.locateAllOnScreen('100x100blueimage.png') # NOTE: This test fails if there is a blue square visible on the screen.
-        with self.assertRaises(pyautogui.ImageNotFoundException):
-            pyautogui.locateOnScreen(
+        # with self.assertRaises(pygb.ImageNotFoundException):
+        #    pygb.locateAllOnScreen('100x100blueimage.png') # NOTE: This test fails if there is a blue square visible on the screen.
+        with self.assertRaises(pygb.ImageNotFoundException):
+            pygb.locateOnScreen(
                 "100x100blueimage.png"
             )  # NOTE: This test fails if there is a blue square visible on the screen.
-        with self.assertRaises(pyautogui.ImageNotFoundException):
-            pyautogui.locateCenterOnScreen(
+        with self.assertRaises(pygb.ImageNotFoundException):
+            pygb.locateCenterOnScreen(
                 "100x100blueimage.png"
             )  # NOTE: This test fails if there is a blue square visible on the screen.
 
-        pyautogui.useImageNotFoundException(False)
-        self.assertEqual(pyautogui.locate("100x100blueimage.png", "100x100redimage.png"), None)
-        # self.assertEqual(pyautogui.locateAll('100x100blueimage.png', '100x100redimage.png'), None)
-        # self.assertEqual(pyautogui.locateAllOnScreen('100x100blueimage.png'), None) # NOTE: This test fails if there is a blue square visible on the screen.
+        pygb.useImageNotFoundException(False)
+        self.assertEqual(pygb.locate("100x100blueimage.png", "100x100redimage.png"), None)
+        # self.assertEqual(pygb.locateAll('100x100blueimage.png', '100x100redimage.png'), None)
+        # self.assertEqual(pygb.locateAllOnScreen('100x100blueimage.png'), None) # NOTE: This test fails if there is a blue square visible on the screen.
         self.assertEqual(
-            pyautogui.locateOnScreen("100x100blueimage.png"), None
+            pygb.locateOnScreen("100x100blueimage.png"), None
         )  # NOTE: This test fails if there is a blue square visible on the screen.
         self.assertEqual(
-            pyautogui.locateCenterOnScreen("100x100blueimage.png"), None
+            pygb.locateCenterOnScreen("100x100blueimage.png"), None
         )  # NOTE: This test fails if there is a blue square visible on the screen.
 
 

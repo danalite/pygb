@@ -1,7 +1,7 @@
-pyautogui
+pygb
 =========
 
 .. toctree::
    :maxdepth: 4
 
-   pyautogui
+   pygb

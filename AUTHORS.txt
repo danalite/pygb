@@ -1,6 +1,6 @@
 Here is an inevitably incomplete list of MUCH-APPRECIATED CONTRIBUTORS --
 people who have submitted patches, reported bugs, added translations, helped
-answer newbie questions, and generally made PyAutoGUI that much better:
+answer newbie questions, and generally made PyGB that much better:
 
 Abhijeet Singh https://github.com/cseas
 Al Sweigart https://github.com/asweigart/

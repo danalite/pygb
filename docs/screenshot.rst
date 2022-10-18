@@ -4,7 +4,7 @@
 Screenshot Functions
 ====================
 
-PyAutoGUI can take screenshots, save them to files, and locate images within the screen. This is useful if you have a small image of, say, a button that needs to be clicked and want to locate it on the screen. These features are provided by the PyScreeze module, which is installed with PyAutoGUI.
+PyGB can take screenshots, save them to files, and locate images within the screen. This is useful if you have a small image of, say, a button that needs to be clicked and want to locate it on the screen. These features are provided by the PyScreeze module, which is installed with PyGB.
 
 Screenshot functionality requires the Pillow module. OS X uses the `screencapture` command, which comes with the operating system. Linux uses the `scrot` command, which can be installed by running `sudo apt-get install scrot`.
 
@@ -15,16 +15,16 @@ Calling `screenshot()` will return an Image object (see the Pillow or PIL module
 
 .. code:: python
 
-    >>> import pyautogui
-    >>> im1 = pyautogui.screenshot()
-    >>> im2 = pyautogui.screenshot('my_screenshot.png')
+    >>> import pygb
+    >>> im1 = pygb.screenshot()
+    >>> im2 = pygb.screenshot('my_screenshot.png')
 
 On a 1920 x 1080 screen, the `screenshot()` function takes roughly 100 milliseconds - it's not fast but it's not slow.
 
 There is also an optional `region` keyword argument, if you do not want a screenshot of the entire screen. You can pass a four-integer tuple of the left, top, width, and height of the region to capture:
 
-    >>> import pyautogui
-    >>> im = pyautogui.screenshot(region=(0,0, 300, 400))
+    >>> import pygb
+    >>> im = pygb.screenshot(region=(0,0, 300, 400))
 
 The Locate Functions
 ====================
@@ -41,15 +41,15 @@ You can't call the `moveTo()` and `click()` functions if you don't know the exac
 
 . . . you can call the `locateOnScreen('calc7key.png')` function to get the screen coordinates. The return value is a 4-integer tuple: (left, top, width, height). This tuple can be passed to `center()` to get the X and Y coordinates at the center of this region. If the image can't be found on the screen, `locateOnScreen()` raises `ImageNotFoundException`.
 
-    >>> import pyautogui
-    >>> button7location = pyautogui.locateOnScreen('calc7key.png')
+    >>> import pygb
+    >>> button7location = pygb.locateOnScreen('calc7key.png')
     >>> button7location
     Box(left=1416, top=562, width=50, height=41)
     >>> button7location[0]
     1416
     >>> button7location.left
     1416
-    >>> button7point = pyautogui.center(button7location)
+    >>> button7point = pygb.center(button7location)
     >>> button7point
     Point(x=1441, y=582)
     >>> button7point[0]
@@ -57,13 +57,13 @@ You can't call the `moveTo()` and `click()` functions if you don't know the exac
     >>> button7point.x
     1441
     >>> button7x, button7y = button7point
-    >>> pyautogui.click(button7x, button7y)  # clicks the center of where the 7 button was found
-    >>> pyautogui.click('calc7key.png') # a shortcut version to click on the center of where the 7 button was found
+    >>> pygb.click(button7x, button7y)  # clicks the center of where the 7 button was found
+    >>> pygb.click('calc7key.png') # a shortcut version to click on the center of where the 7 button was found
 
 The optional `confidence` keyword argument specifies the accuracy with which the function should locate the image on screen. This is helpful in case the function is not able to locate an image due to negligible pixel differences:
 
-    >>> import pyautogui
-    >>> button7location = pyautogui.locateOnScreen('calc7key.png', confidence=0.9)
+    >>> import pygb
+    >>> button7location = pygb.locateOnScreen('calc7key.png', confidence=0.9)
     >>> button7location
     Box(left=1416, top=562, width=50, height=41)
 
@@ -71,9 +71,9 @@ The optional `confidence` keyword argument specifies the accuracy with which the
 
 The `locateCenterOnScreen()` function combines `locateOnScreen()` and `center()`:
 
-    >>> import pyautogui
-    >>> x, y = pyautogui.locateCenterOnScreen('calc7key.png')
-    >>> pyautogui.click(x, y)
+    >>> import pygb
+    >>> x, y = pygb.locateCenterOnScreen('calc7key.png')
+    >>> pygb.click(x, y)
 
 On a 1920 x 1080 screen, the locate function calls take about 1 or 2 seconds. This may be too slow for action video games, but works for most purposes and applications.
 
@@ -91,29 +91,29 @@ There are several "locate" functions. They all start looking at the top-left cor
 
 The "locate all" functions can be used in for loops or passed to `list()`:
 
-    >>> import pyautogui
-    >>> for pos in pyautogui.locateAllOnScreen('someButton.png')
+    >>> import pygb
+    >>> for pos in pygb.locateAllOnScreen('someButton.png')
     ...   print(pos)
     ...
     (1101, 252, 50, 50)
     (59, 481, 50, 50)
     (1395, 640, 50, 50)
     (1838, 676, 50, 50)
-    >>> list(pyautogui.locateAllOnScreen('someButton.png'))
+    >>> list(pygb.locateAllOnScreen('someButton.png'))
     [(1101, 252, 50, 50), (59, 481, 50, 50), (1395, 640, 50, 50), (1838, 676, 50, 50)]
 
 These "locate" functions are fairly expensive; they can take a full second to run. The best way to speed them up is to pass a `region` argument (a 4-integer tuple of (left, top, width, height)) to only search a smaller region of the screen instead of the full screen:
 
-    >>> import pyautogui
-    >>> pyautogui.locateOnScreen('someButton.png', region=(0,0, 300, 400))
+    >>> import pygb
+    >>> pygb.locateOnScreen('someButton.png', region=(0,0, 300, 400))
 
 Grayscale Matching
 ------------------
 
 Optionally, you can pass `grayscale=True` to the locate functions to give a slight speedup (about 30%-ish). This desaturates the color from the images and screenshots, speeding up the locating but potentially causing false-positive matches.
 
-    >>> import pyautogui
-    >>> button7location = pyautogui.locateOnScreen('calc7key.png', grayscale=True)
+    >>> import pygb
+    >>> button7location = pygb.locateOnScreen('calc7key.png', grayscale=True)
     >>> button7location
     (1416, 562, 50, 41)
 
@@ -122,15 +122,15 @@ Pixel Matching
 
 To obtain the RGB color of a pixel in a screenshot, use the Image object's `getpixel()` method:
 
-    >>> import pyautogui
-    >>> im = pyautogui.screenshot()
+    >>> import pygb
+    >>> im = pygb.screenshot()
     >>> im.getpixel((100, 200))
     (130, 135, 144)
 
-Or as a single function, call the `pixel()` PyAutoGUI function, which is a wrapper for the previous calls:
+Or as a single function, call the `pixel()` PyGB function, which is a wrapper for the previous calls:
 
-    >>> import pyautogui
-    >>> pix = pyautogui.pixel(100, 200)
+    >>> import pygb
+    >>> pix = pygb.pixel(100, 200)
     >>> pix
     RGB(red=130, green=135, blue=144)
     >>> pix[0]
@@ -140,18 +140,18 @@ Or as a single function, call the `pixel()` PyAutoGUI function, which is a wrapp
 
 If you just need to verify that a single pixel matches a given pixel, call the `pixelMatchesColor()` function, passing it the X coordinate, Y coordinate, and RGB tuple of the color it represents:
 
-    >>> import pyautogui
-    >>> pyautogui.pixelMatchesColor(100, 200, (130, 135, 144))
+    >>> import pygb
+    >>> pygb.pixelMatchesColor(100, 200, (130, 135, 144))
     True
-    >>> pyautogui.pixelMatchesColor(100, 200, (0, 0, 0))
+    >>> pygb.pixelMatchesColor(100, 200, (0, 0, 0))
     False
 
 The optional `tolerance` keyword argument specifies how much each of the red, green, and blue values can vary while still matching:
 
-    >>> import pyautogui
-    >>> pyautogui.pixelMatchesColor(100, 200, (130, 135, 144))
+    >>> import pygb
+    >>> pygb.pixelMatchesColor(100, 200, (130, 135, 144))
     True
-    >>> pyautogui.pixelMatchesColor(100, 200, (140, 125, 134))
+    >>> pygb.pixelMatchesColor(100, 200, (140, 125, 134))
     False
-    >>> pyautogui.pixelMatchesColor(100, 200, (140, 125, 134), tolerance=10)
+    >>> pygb.pixelMatchesColor(100, 200, (140, 125, 134), tolerance=10)
     True
