@@ -1,17 +1,13 @@
+from curses import window
 import pygb
 import sys
 import time
 
-# Slack
-windowPID = 3253
+# iterm2
+windowPID = 4890
 
 if sys.platform == "darwin":
     from AppKit import NSWorkspace
-
-    # https://stackoverflow.com/a/65766428
-    # NSWorkspace.sharedWorkspace().runningApplications()
-    # NSWorkspace.sharedWorkspace().frontmostApplication()
-    # app.activateWithOptions_(NSApplicationActivateIgnoringOtherApps)
 
     from AppKit import NSApplicationActivateIgnoringOtherApps
     from Quartz import (
@@ -38,6 +34,7 @@ class WindowInstance:
         return f"WindowInstance(pid={self.pid}, WID={self.windowID}, lt={self.lt}, wh={self.wh}, owner={self.owner}, title={self.title})"
 
 def getActiveApplicationName():
+    print(NSWorkspace.sharedWorkspace().activeApplication().items())
     return NSWorkspace.sharedWorkspace().activeApplication()['NSApplicationName']
 
 def activateWindow():
@@ -94,13 +91,17 @@ def getActiveWindow():
 # pygb.keyDown("s", window=windowPID)
 
 
-time.sleep(3)
-print(getActiveWindow())
+# time.sleep(2)
+getActiveApplicationName()
+# print(getActiveWindow())
 
-# pygb.hotkey("f1", window=windowPID, interval = 0.05)
-pygb.hotkey("command", "G", window=windowPID, interval = 0.05)
-pygb.hotkey("command", "Enter", window=windowPID, interval = 0.05)
-pygb.hotkey("lshift", "A", window=windowPID)
+pygb.write("top", window=windowPID)
+pygb.hotkey("Enter", window=windowPID, interval = 0.5)
 
-pygb.moveTo(62, 22, duration=0.5)
+pygb.hotkey("q", window=windowPID, interval = 0.05)
+
+pygb.write("echo 'Top is done'", window=windowPID)
+pygb.press("Enter", window=windowPID)
+
+# pygb.moveTo(62, 22, duration=0.5)
 activateWindow()

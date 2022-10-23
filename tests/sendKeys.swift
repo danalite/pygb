@@ -7,7 +7,7 @@ let k2 = CGEvent(keyboardEventSource: src, virtualKey: 0x37, keyDown: true)   //
 let k3 = CGEvent(keyboardEventSource: src, virtualKey: 0x37, keyDown: false)  // space-up
 let k4 = CGEvent(keyboardEventSource: src, virtualKey: 0x03, keyDown: false)  // space-up
 
-let pids = [ 3900 ]; // real PID-s from command 'ps -ax' - e.g. for example 3 different processes
+let pids = [ 549 ]; // real PID-s from command 'ps -ax' - e.g. for example 3 different processes
     
 for i in 0 ..< pids.count {
     print("sending to pid: ", pids[i]);

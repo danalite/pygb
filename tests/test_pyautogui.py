@@ -24,11 +24,6 @@ else:
 
 
 try:
-    import pytweening
-except:
-    assert False, "The PyTweening module must be installed to complete the tests: pip install pytweening"
-
-try:
     import pyscreeze
 except:
     assert False, "The PyScreeze module must be installed to complete the tests: pip install pyscreeze"
@@ -138,40 +133,9 @@ class TestGeneral(unittest.TestCase):
         pygb.screenshot
         pygb.grab
 
-        # TODO(denilsonsa): I believe we should get rid of these symbols. If someone wants tweening, import pytweening module instead!
         # Tweening-related API
         pygb.getPointOnLine
         pygb.linear
-        pygb.easeInQuad
-        pygb.easeOutQuad
-        pygb.easeInOutQuad
-        pygb.easeInCubic
-        pygb.easeOutCubic
-        pygb.easeInOutCubic
-        pygb.easeInQuart
-        pygb.easeOutQuart
-        pygb.easeInOutQuart
-        pygb.easeInQuint
-        pygb.easeOutQuint
-        pygb.easeInOutQuint
-        pygb.easeInSine
-        pygb.easeOutSine
-        pygb.easeInOutSine
-        pygb.easeInExpo
-        pygb.easeOutExpo
-        pygb.easeInOutExpo
-        pygb.easeInCirc
-        pygb.easeOutCirc
-        pygb.easeInOutCirc
-        pygb.easeInElastic
-        pygb.easeOutElastic
-        pygb.easeInOutElastic
-        pygb.easeInBack
-        pygb.easeOutBack
-        pygb.easeInOutBack
-        pygb.easeInBounce
-        pygb.easeOutBounce
-        pygb.easeInOutBounce
 
     def test_size(self):
         width, height = pygb.size()

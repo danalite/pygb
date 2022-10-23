@@ -221,7 +221,6 @@ def _keyDown(key, window=None):
         return
 
     if key in special_key_translate_table:
-        
         _specialKeyEvent(key, 'down', window)
     else:
         _normalKeyEvent(key, 'down', window)
@@ -292,13 +291,6 @@ def _specialKeyEvent(key, upDown):
         )
 
     Quartz.CGEventPost(0, ev.CGEvent())
-
-
-
-
-
-
-
 
 
 def _position():

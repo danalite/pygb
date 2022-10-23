@@ -66,86 +66,6 @@ else:
     collectionsSequence = collections.abc.Sequence  # type: ignore
 
 
-try:
-    from pytweening import (
-        easeInQuad,
-        easeOutQuad,
-        easeInOutQuad,
-        easeInCubic,
-        easeOutCubic,
-        easeInOutCubic,
-        easeInQuart,
-        easeOutQuart,
-        easeInOutQuart,
-        easeInQuint,
-        easeOutQuint,
-        easeInOutQuint,
-        easeInSine,
-        easeOutSine,
-        easeInOutSine,
-        easeInExpo,
-        easeOutExpo,
-        easeInOutExpo,
-        easeInCirc,
-        easeOutCirc,
-        easeInOutCirc,
-        easeInElastic,
-        easeOutElastic,
-        easeInOutElastic,
-        easeInBack,
-        easeOutBack,
-        easeInOutBack,
-        easeInBounce,
-        easeOutBounce,
-        easeInOutBounce,
-    )
-
-    # getLine is not needed.
-    # getPointOnLine has been redefined in this file, to avoid dependency on pytweening.
-    # linear has also been redefined in this file.
-except ImportError:
-
-    def _couldNotImportPyTweening(*unused_args, **unused_kwargs):
-        """
-        This function raises ``PyGBException``. It's used for the PyTweening function names if the PyTweening
-        module failed to be imported.
-        """
-        raise PyGBException(
-            "PyGB was unable to import pytweening. Please install this module to enable the function you tried to call."
-        )
-
-    easeInQuad = _couldNotImportPyTweening
-    easeOutQuad = _couldNotImportPyTweening
-    easeInOutQuad = _couldNotImportPyTweening
-    easeInCubic = _couldNotImportPyTweening
-    easeOutCubic = _couldNotImportPyTweening
-    easeInOutCubic = _couldNotImportPyTweening
-    easeInQuart = _couldNotImportPyTweening
-    easeOutQuart = _couldNotImportPyTweening
-    easeInOutQuart = _couldNotImportPyTweening
-    easeInQuint = _couldNotImportPyTweening
-    easeOutQuint = _couldNotImportPyTweening
-    easeInOutQuint = _couldNotImportPyTweening
-    easeInSine = _couldNotImportPyTweening
-    easeOutSine = _couldNotImportPyTweening
-    easeInOutSine = _couldNotImportPyTweening
-    easeInExpo = _couldNotImportPyTweening
-    easeOutExpo = _couldNotImportPyTweening
-    easeInOutExpo = _couldNotImportPyTweening
-    easeInCirc = _couldNotImportPyTweening
-    easeOutCirc = _couldNotImportPyTweening
-    easeInOutCirc = _couldNotImportPyTweening
-    easeInElastic = _couldNotImportPyTweening
-    easeOutElastic = _couldNotImportPyTweening
-    easeInOutElastic = _couldNotImportPyTweening
-    easeInBack = _couldNotImportPyTweening
-    easeOutBack = _couldNotImportPyTweening
-    easeInOutBack = _couldNotImportPyTweening
-    easeInBounce = _couldNotImportPyTweening
-    easeOutBounce = _couldNotImportPyTweening
-    easeInOutBounce = _couldNotImportPyTweening
-
-
 def raisePyGBImageNotFoundException(wrappedFunction):
     """
     A decorator that wraps PyScreeze locate*() functions so that the PyGB user sees them raise PyGB's
@@ -565,7 +485,6 @@ def getPointOnLine(x1, y1, x2, y2, n):
     Returns an (x, y) tuple of the point that has progressed a proportion ``n`` along the line defined by the two
     ``x1``, ``y1`` and ``x2``, ``y2`` coordinates.
 
-    This function was copied from pytweening module, so that it can be called even if PyTweening is not installed.
     """
     x = ((x2 - x1) * n) + x1
     y = ((y2 - y1) * n) + y1
@@ -580,7 +499,6 @@ def linear(n):
     This function was copied from PyTweening module, so that it can be called even if PyTweening is not installed.
     """
 
-    # We use this function instead of pytweening.linear for the default tween function just in case pytweening couldn't be imported.
     if not 0.0 <= n <= 1.0:
         raise PyGBException("Argument must be between 0.0 and 1.0.")
     return n
@@ -1534,7 +1452,7 @@ def keyUp(key, logScreenshot=None, _pause=True, window=None):
 
 
 @_genericPyGBChecks
-def press(keys, presses=1, interval=0.0, logScreenshot=None, _pause=True):
+def press(keys, presses=1, interval=0.0, logScreenshot=None, _pause=True, window=None):
     """Performs a keyboard key press down, followed by a release.
 
     Args:
@@ -1566,8 +1484,8 @@ def press(keys, presses=1, interval=0.0, logScreenshot=None, _pause=True):
     for i in range(presses):
         for k in keys:
             failSafeCheck()
-            platformModule._keyDown(k)
-            platformModule._keyUp(k)
+            platformModule._keyDown(k, window)
+            platformModule._keyUp(k, window)
         time.sleep(interval)
 
 
@@ -1610,7 +1528,7 @@ def hold(keys, logScreenshot=None, _pause=True):
 
 
 @_genericPyGBChecks
-def typewrite(message, interval=0.0, logScreenshot=None, _pause=True):
+def typewrite(message, interval=0.0, logScreenshot=None, _pause=True, window=None):
     """Performs a keyboard key press down, followed by a release, for each of
     the characters in message.
 
@@ -1637,7 +1555,7 @@ def typewrite(message, interval=0.0, logScreenshot=None, _pause=True):
     for c in message:
         if len(c) > 1:
             c = c.lower()
-        press(c, _pause=False)
+        press(c, _pause=False, window=window)
         time.sleep(interval)
         failSafeCheck()
 
