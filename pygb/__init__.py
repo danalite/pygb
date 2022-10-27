@@ -401,6 +401,20 @@ QWERTY = r"""`1234567890-=qwertyuiop[]\asdfghjkl;'zxcvbnm,./~!@#$%^&*()_+QWERTYU
 QWERTZ = r"""=1234567890/0qwertzuiop89-asdfghjkl,\yxcvbnm,.7+!@#$%^&*()?)QWERTZUIOP*(_ASDFGHJKL<|YXCVBNM<>&"""
 
 
+class WindowInstance:
+    def __init__(self, pid: int = 0, windowID : int = 0, position: tuple = (0, 0),
+                 dimX: int = 0, dimY: int = 0, app: str = "", title: str = ""):
+        self.pid = pid
+        self.windowID = windowID
+        self.lt = position
+        self.wh = (dimX, dimY)
+        self.owner = app
+        self.title = title
+    
+    def __repr__(self):
+        return f"WindowInstance(pid={self.pid}, WID={self.windowID}, lt={self.lt}, wh={self.wh}, owner={self.owner}, title={self.title})"
+
+
 def isShiftCharacter(character):
     """
     Returns True if the ``character`` is a keyboard key that would require the shift key to be held down, such as
@@ -751,6 +765,11 @@ def _normalizeButton(button):
     # Return a mouse button integer value, not a string like 'left':
     return {LEFT: LEFT, MIDDLE: MIDDLE, RIGHT: RIGHT, 1: LEFT, 2: MIDDLE, 3: RIGHT, 4: 4, 5: 5, 6: 6, 7: 7}[button]
 
+def activateWindow(windowName):
+    platformModule._activateWindow(windowName)
+
+def getActiveWindow():
+    return platformModule._getActiveWindow()
 
 @_genericPyGBChecks
 def mouseDown(x=None, y=None, button=PRIMARY, duration=0.0, tween=linear, logScreenshot=None, _pause=True):
@@ -1943,9 +1962,6 @@ def _runCommandList(commandList, _ssCount):
         elif command == "h":
             hotkey(*commandList[i + 1].replace(" ", "").split(","))
             i += 1
-        elif command == "a":
-            alert(commandList[i + 1])
-            i += 1
         elif command == "f":
             for j in range(int(commandList[i + 1])):
                 _runCommandList(commandList[i + 2], _ssCount)
@@ -1984,7 +2000,6 @@ def run(commandStr, _ssCount=None):
     `k'key'` => `press('key')`
     `w'text'` => `write('text')`
     `h'key,key,key'` => `hotkey(*'key,key,key'.replace(' ', '').split(','))`
-    `a'hello'` => `alert('hello')`
 
     `sN` => `sleep(N) # N can be an int or float`
     `pN` => `PAUSE = N # N can be an int or float`

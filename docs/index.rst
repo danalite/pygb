@@ -19,7 +19,6 @@ PyGB has several features:
 * Sending keystrokes to applications (for example, to fill out forms).
 * Take screenshots, and given an image (for example, of a button or checkbox), and find it on the screen.
 * Locate an application's window, and move, resize, maximize, minimize, or close it (Windows-only, currently).
-* Display alert and message boxes.
 
 Here's `a YouTube video of a bot automatically playing the game Sushi Go Round <https://www.youtube.com/watch?v=lfk_T6VKhTE>`_. The bot watches the game's application window and searches for images of sushi orders. When it finds one, it clicks the ingredient buttons to make the sushi. It also clicks the phone in the game to order more ingredients as needed. The bot is completely autonomous and can finish all seven days of the game. This is the kind of automation that PyGB is capable of.
 
@@ -57,7 +56,6 @@ Examples
 
     >>> pygb.hotkey('ctrl', 'c') # Press the Ctrl-C hotkey combination.
 
-    >>> pygb.alert('This is the message to display.') # Make an alert box appear and pause the program until OK is clicked.
 
 This example drags the mouse in a square spiral shape in MS Paint (or any graphics drawing program):
 

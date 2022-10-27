@@ -94,19 +94,6 @@ Individual button down and up events can be called separately:
     >>> pygb.keyUp(key_name)
 
 
-Message Box Functions
----------------------
-
-If you need to pause the program until the user clicks OK on something, or want to display some information to the user, the message box functions have similar names that JavaScript has:
-
-    >>> pygb.alert('This displays some text with an OK button.')
-    >>> pygb.confirm('This displays text and has an OK and Cancel button.')
-    'OK'
-    >>> pygb.prompt('This lets the user type in a string and press OK.')
-    'This is what I typed in.'
-
-The `prompt()` function will return `None` if the user clicked Cancel.
-
 Screenshot Functions
 --------------------
 

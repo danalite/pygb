@@ -5,7 +5,12 @@
 import ctypes
 import ctypes.wintypes
 import pygb
-from pygb import LEFT, MIDDLE, RIGHT
+from pygb import LEFT, MIDDLE, RIGHT, WindowInstance
+
+try:
+    from win32gui import GetWindowText, GetForegroundWindow, GetWindowRect
+except:
+    assert False, "You must first install win32gui"
 
 import sys
 if sys.platform !=  'win32':
@@ -566,3 +571,8 @@ def _vscroll(clicks, x, y):
     """
     return _scroll(clicks, x, y)
 
+def _getWindows():
+    hwnd = GetForegroundWindow()
+    title = GetWindowText(hwnd)
+    x1, y1, x2, y2 = GetWindowRect(hwnd)
+    wi = WindowInstance(hwnd, (x1, y1), x2-x1, y2-y1, title, "")

@@ -3,12 +3,20 @@ import sys
 
 try:
     import Quartz
+    from AppKit import NSWorkspace
+    from AppKit import NSApplicationActivateIgnoringOtherApps
+    from Quartz import (
+        CGWindowListCopyWindowInfo,
+        kCGWindowListOptionOnScreenOnly,
+        kCGWindowListExcludeDesktopElements,
+        kCGNullWindowID
+    )
 except:
     assert False, "You must first install pyobjc-core and pyobjc: https://pygb.readthedocs.io/en/latest/install.html"
 import AppKit
 
 import pygb
-from pygb import LEFT, MIDDLE, RIGHT
+from pygb import LEFT, MIDDLE, RIGHT, WindowInstance
 
 if sys.platform !=  'darwin':
     raise Exception('The pygb_osx module should only be loaded on an OS X system.')
@@ -433,3 +441,40 @@ def _dragTo(x, y, button):
 def _moveTo(x, y):
     _sendMouseEvent(Quartz.kCGEventMouseMoved, x, y, 0)
     time.sleep(pygb.DARWIN_CATCH_UP_TIME) # needed to allow OS time to catch up.
+
+
+def _activateWindow(name):
+    runningApplications = NSWorkspace.sharedWorkspace().runningApplications()
+    for app in runningApplications:
+        # if getActiveApplicationName() == app.localizedName():
+        if name in app.localizedName():
+            app.activateWithOptions_(NSApplicationActivateIgnoringOtherApps)    
+
+
+def _getActiveWindow():
+    # https://stackoverflow.com/a/44229825
+    # https://github.com/asweigart/PyGetWindow
+    curr_app = NSWorkspace.sharedWorkspace().frontmostApplication()
+    curr_pid = NSWorkspace.sharedWorkspace().activeApplication()[
+        'NSApplicationProcessIdentifier']
+    curr_app_name = curr_app.localizedName()
+
+    options = kCGWindowListOptionOnScreenOnly 
+    windowList = CGWindowListCopyWindowInfo(options, kCGNullWindowID)
+
+    wi = None
+    for window in windowList:
+        pid = window['kCGWindowOwnerPID']
+        windowNumber = window['kCGWindowNumber']
+        ownerName = window['kCGWindowOwnerName']
+        geometry = window['kCGWindowBounds']
+        windowTitle = window.get('kCGWindowName', u'Unknown')
+
+        if curr_pid == pid:
+            title = windowTitle.encode('ascii', 'ignore')
+            h, w, x, y = geometry["Height"], geometry["Width"], geometry["X"], geometry["Y"]
+            if h > 100 and w > 100:
+                wi = WindowInstance(pid, windowNumber, (x, y), w, h, ownerName, title)
+                return wi
+
+    return wi
