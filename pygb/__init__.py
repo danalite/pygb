@@ -47,10 +47,10 @@ class FailSafeException(PyGBException):
 
 class ImageNotFoundException(PyGBException):
     """
-    This exception is the PyGB version of PyScreeze's `ImageNotFoundException`, which is raised when a locate*()
+    This exception is the PyGB version of PyScreen's `ImageNotFoundException`, which is raised when a locate*()
     function call is unable to find an image.
 
-    Ideally, `pyscreeze.ImageNotFoundException` should never be raised by PyGB.
+    Ideally, `pyscreen.ImageNotFoundException` should never be raised by PyGB.
     """
 
 
@@ -66,87 +66,20 @@ else:
     collectionsSequence = collections.abc.Sequence  # type: ignore
 
 
-def raisePyGBImageNotFoundException(wrappedFunction):
-    """
-    A decorator that wraps PyScreeze locate*() functions so that the PyGB user sees them raise PyGB's
-    ImageNotFoundException rather than PyScreeze's ImageNotFoundException. This is because PyScreeze should be
-    invisible to PyGB users.
-    """
+from . import _pygb_screen as pyscreen
 
-    @functools.wraps(wrappedFunction)
-    def wrapper(*args, **kwargs):
-        try:
-            return wrappedFunction(*args, **kwargs)
-        except pyscreeze.ImageNotFoundException:
-            raise ImageNotFoundException  # Raise PyGB's ImageNotFoundException.
-
-    return wrapper
-
-
-try:
-    import pyscreeze
-    from pyscreeze import center, grab, pixel, pixelMatchesColor, screenshot
-
-    # Change the locate*() functions so that they raise PyGB's ImageNotFoundException instead.
-    @raisePyGBImageNotFoundException
-    def locate(*args, **kwargs):
-        return pyscreeze.locate(*args, **kwargs)
-
-    locate.__doc__ = pyscreeze.locate.__doc__
-
-    @raisePyGBImageNotFoundException
-    def locateAll(*args, **kwargs):
-        return pyscreeze.locateAll(*args, **kwargs)
-
-    locateAll.__doc__ = pyscreeze.locateAll.__doc__
-
-    @raisePyGBImageNotFoundException
-    def locateAllOnScreen(*args, **kwargs):
-        return pyscreeze.locateAllOnScreen(*args, **kwargs)
-
-    locateAllOnScreen.__doc__ = pyscreeze.locateAllOnScreen.__doc__
-
-    @raisePyGBImageNotFoundException
-    def locateCenterOnScreen(*args, **kwargs):
-        return pyscreeze.locateCenterOnScreen(*args, **kwargs)
-
-    locateCenterOnScreen.__doc__ = pyscreeze.locateCenterOnScreen.__doc__
-
-    @raisePyGBImageNotFoundException
-    def locateOnScreen(*args, **kwargs):
-        return pyscreeze.locateOnScreen(*args, **kwargs)
-
-    locateOnScreen.__doc__ = pyscreeze.locateOnScreen.__doc__
-
-    @raisePyGBImageNotFoundException
-    def locateOnWindow(*args, **kwargs):
-        return pyscreeze.locateOnWindow(*args, **kwargs)
-
-    locateOnWindow.__doc__ = pyscreeze.locateOnWindow.__doc__
-
-
-except ImportError:
-    # If pyscreeze module is not found, screenshot-related features will simply not work.
-    def _couldNotImportPyScreeze(*unused_args, **unsed_kwargs):
-        """
-        This function raises ``PyGBException``. It's used for the PyScreeze function names if the PyScreeze module
-        failed to be imported.
-        """
-        raise PyGBException(
-            "PyGB was unable to import pyscreeze. (This is likely because you're running a version of Python that Pillow (which pyscreeze depends on) doesn't support currently.) Please install this module to enable the function you tried to call."
-        )
-
-    center = _couldNotImportPyScreeze
-    grab = _couldNotImportPyScreeze
-    locate = _couldNotImportPyScreeze
-    locateAll = _couldNotImportPyScreeze
-    locateAllOnScreen = _couldNotImportPyScreeze
-    locateCenterOnScreen = _couldNotImportPyScreeze
-    locateOnScreen = _couldNotImportPyScreeze
-    locateOnWindow = _couldNotImportPyScreeze
-    pixel = _couldNotImportPyScreeze
-    pixelMatchesColor = _couldNotImportPyScreeze
-    screenshot = _couldNotImportPyScreeze
+center = pyscreen.center
+grab = pyscreen.grab
+locate = pyscreen.locate
+locateAll = pyscreen.locateAll
+locateAllOnScreen = pyscreen.locateAllOnScreen
+locateCenterOnScreen = pyscreen.locateCenterOnScreen
+locateOnScreen = pyscreen.locateOnScreen
+locateOnWindow = pyscreen.locateOnWindow
+pixel = pyscreen.pixel
+pixelMatchesColor = pyscreen.pixelMatchesColor
+screenshot = pyscreen.screenshot
+# showRegionOnScreen = pyscreen.showRegionOnScreen
 
 
 try:
@@ -174,7 +107,7 @@ except ImportError:
 
 def useImageNotFoundException(value=None):
     """
-    When called with no arguments, PyGB will raise ImageNotFoundException when the PyScreeze locate*() functions
+    When called with no arguments, PyGB will raise ImageNotFoundException when the PyScreen locate*() functions
     can't find the image it was told to locate. The default behavior is to return None. Call this function with no
     arguments (or with True as the argument) to have exceptions raised, which is a better practice.
 
@@ -182,11 +115,11 @@ def useImageNotFoundException(value=None):
     """
     if value is None:
         value = True
-    # TODO - this will cause a NameError if PyScreeze couldn't be imported:
+    # TODO - this will cause a NameError if PyScreen couldn't be imported:
     try:
-        pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION = value
+        pyscreen.USE_IMAGE_NOT_FOUND_EXCEPTION = value
     except NameError:
-        raise PyGBException("useImageNotFoundException() ws called but pyscreeze isn't installed.")
+        raise PyGBException("useImageNotFoundException() ws called but pyscreen isn't installed.")
 
 
 KEY_NAMES = [
@@ -425,10 +358,7 @@ def isShiftCharacter(character):
 
 
 # The platformModule is where we reference the platform-specific functions.
-if sys.platform.startswith("java"):
-    # from . import _pygb_java as platformModule
-    raise NotImplementedError("Jython is not yet supported by PyGB.")
-elif sys.platform == "darwin":
+if sys.platform == "darwin":
     from . import _pygb_osx as platformModule
 elif sys.platform == "win32":
     from . import _pygb_win as platformModule
@@ -551,13 +481,13 @@ def _normalizeXYArgs(firstArg, secondArg):
         # If x is a string, we assume it's an image filename to locate on the screen:
         try:
             location = locateOnScreen(firstArg)
-            # The following code only runs if pyscreeze.USE_IMAGE_NOT_FOUND_EXCEPTION is not set to True, meaning that
+            # The following code only runs if pyscreen.USE_IMAGE_NOT_FOUND_EXCEPTION is not set to True, meaning that
             # locateOnScreen() returns None if the image can't be found.
             if location is not None:
                 return center(location)
             else:
                 return None
-        except pyscreeze.ImageNotFoundException:
+        except pyscreen.ImageNotFoundException:
             raise ImageNotFoundException
 
         return center(locateOnScreen(firstArg))
@@ -1642,7 +1572,7 @@ def displayMousePosition(xOffset=0, yOffset=0):
                 # Pixel color can only be found for the primary monitor, and also not on mac due to the screenshot having the mouse cursor in the way.
                 pixelColor = ("NaN", "NaN", "NaN")
             else:
-                pixelColor = pyscreeze.screenshot().getpixel(
+                pixelColor = pyscreen.screenshot().getpixel(
                     (x, y)
                 )  # NOTE: On Windows & Linux, getpixel() returns a 3-integer tuple, but on macOS it returns a 4-integer tuple.
             positionStr += " RGB: (" + str(pixelColor[0]).rjust(3)
