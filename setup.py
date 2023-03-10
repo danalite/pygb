@@ -18,8 +18,8 @@ with io.open("README.md", encoding="utf-8") as fileObj:
 setup(
     name='PyGB',
     version=version,
-    url='https://github.com/asweigart/pygb',
-    author='Al Sweigart',
+    url='https://github.com/danalites/pygb',
+    author='Al Sweigart, and other contributors',
     author_email='al@inventwithpython.com',
     description=('PyGB lets Python control the mouse and keyboard, and other GUI automation tasks. For Windows, macOS, and Linux, on Python 3 and 2.'),
     long_description=long_description,
