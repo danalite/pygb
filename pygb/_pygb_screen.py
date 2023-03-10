@@ -19,19 +19,11 @@ try:
     from PIL import Image
     from PIL import ImageOps
     from PIL import ImageDraw
-    if sys.platform == 'win32': # TODO - Pillow now supports ImageGrab on macOS.
+    if sys.platform == 'win32': 
         from PIL import ImageGrab
+
     _PILLOW_UNAVAILABLE = False
 except ImportError:
-    # We ignore this because failures due to Pillow not being installed
-    # should only happen when the functions that specifically depend on
-    # Pillow are called. The main use case is when PyAutoGUI imports
-    # PyScreeze, but Pillow isn't installed because the user is running
-    # some platform/version of Python that Pillow doesn't support, then
-    # importing PyAutoGUI should not automatically fail because it
-    # imports PyScreeze.
-    # So we have a `pass` statement here since a failure to import
-    # Pillow shouldn't crash PyScreeze.
     _PILLOW_UNAVAILABLE = True
 
 
@@ -466,18 +458,23 @@ def _screenshot_win32(imageFilename=None, region=None):
     return im
 
 
-def _screenshot_osx(imageFilename=None, region=None, window=None):
+def _screenshot_osx(imageFilename=None, region=None, window=None, interactive=False):
     # TODO - use tmp name for this file.
     if imageFilename is None:
         tmpFilename = 'screenshot%s.png' % (datetime.datetime.now().strftime('%Y-%m%d_%H-%M-%S-%f'))
     else:
         tmpFilename = imageFilename
     
-    if window is None:
-        subprocess.call(['screencapture', '-x', tmpFilename])
-    else:
-        # No sound (-x) and do not capture window shadow (-o)
-        subprocess.call(['screencapture', '-l', str(window), '-x', '-o', tmpFilename])
+    commands = ['screencapture', '-x']
+    if window is not None:
+        commands.append('-l')
+        commands.append(str(window))
+    if interactive:
+        commands.append('-i')
+    
+    commands.append("-o")
+    commands.append(tmpFilename)
+    subprocess.call(commands)
 
     im = Image.open(tmpFilename)
 
